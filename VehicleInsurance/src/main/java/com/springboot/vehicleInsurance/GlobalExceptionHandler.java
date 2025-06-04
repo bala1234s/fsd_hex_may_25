@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.springboot.vehicleInsurance.exception.CustomerNotFoundException;
+import com.springboot.vehicleInsurance.exception.PolicyNotFoundException;
+
 import io.jsonwebtoken.security.SignatureException;
 
 @ControllerAdvice
@@ -36,4 +39,27 @@ public class GlobalExceptionHandler {
 				.status(HttpStatus.UNAUTHORIZED)
 				.body(map);
 	}
+	
+	/*
+	 * Whenever Customer is invalid throw in Controller ,
+	 * this method will call
+	 * */
+	@ExceptionHandler(exception = CustomerNotFoundException.class)
+	public ResponseEntity<?> handleCustomerInvalid(CustomerNotFoundException e) {
+		Map<String, String> map = new HashMap<>();
+		map.put("message",e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+	}
+	
+	/*
+	 * Whenever policy is invalid throw in Controller ,
+	 * this method will call
+	 * */
+	@ExceptionHandler(exception = PolicyNotFoundException.class)
+	public ResponseEntity<?> handlePolicyInvalid(PolicyNotFoundException e) {
+		Map<String, String> map = new HashMap<>();
+		map.put("message",e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+	}
+	
 }
