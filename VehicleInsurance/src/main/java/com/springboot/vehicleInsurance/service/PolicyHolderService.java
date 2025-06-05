@@ -83,7 +83,7 @@ public class PolicyHolderService {
 
 	public List<PolicyHolder> getAll() {
 		// Fetch All Policy Holder
-		return holderRepository.findAll();
+		return holderRepository.getAllPolicyHolder();
 	}
 
 

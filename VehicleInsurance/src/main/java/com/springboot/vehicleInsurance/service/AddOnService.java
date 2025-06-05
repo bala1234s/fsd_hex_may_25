@@ -38,4 +38,20 @@ public class AddOnService {
 		addOnRepository.saveAll(addOns);
 	}
 
+
+
+
+	public List<AddOns> getAllAddons() {
+		
+		return addOnRepository.findAll();
+	}
+
+
+
+
+	public List<AddOns> getByPolicyHolderId(int policyHolderId) {
+		
+		return addOnRepository.getByPolicyHolderId(policyHolderId);
+	}
+
 }

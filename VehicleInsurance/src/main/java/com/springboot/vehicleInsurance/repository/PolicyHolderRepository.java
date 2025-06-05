@@ -27,5 +27,8 @@ public interface PolicyHolderRepository extends JpaRepository<PolicyHolder, Inte
 	@Query("SELECT ph FROM PolicyHolder ph WHERE ph.vehicle.customer.id = ?1 AND ph.policy.id = ?2")
 	PolicyHolder getByCustomerAndPolicy(int customerId, int policyId);
 
+	@Query("select ph,a from PolicyHolder ph join AddOns a on a.policyHolder.id = ph.id ")
+	List<PolicyHolder> getAllPolicyHolder();
+
 
 }

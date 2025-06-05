@@ -21,6 +21,9 @@ public class EPolicy {
 	private String policyType;
 	@Column(name = "description")
 	private String description;
+	
+	private double price;
+	
 	@Column(name = "created_date")
 	private LocalDate createdDate;
 	public int getId() {
@@ -40,6 +43,13 @@ public class EPolicy {
 	}
 	public void setPolicyType(String policyType) {
 		this.policyType = policyType;
+	}
+	
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	public String getDescription() {
 		return description;

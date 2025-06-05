@@ -1,0 +1,56 @@
+package com.springboot.vehicleInsurance.service;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.springboot.vehicleInsurance.exception.PolicyHolderNotFound;
+import com.springboot.vehicleInsurance.model.AddOns;
+import com.springboot.vehicleInsurance.model.PolicyHolder;
+import com.springboot.vehicleInsurance.model.Quote;
+import com.springboot.vehicleInsurance.repository.PolicyHolderRepository;
+import com.springboot.vehicleInsurance.repository.QuoteRepository;
+
+@Service
+public class QuoteService {
+
+
+	
+	private QuoteRepository quoteRepository;
+	private PolicyHolderRepository holderRepository;
+	private AddOnService addOnService;
+	
+	public QuoteService(QuoteRepository quoteRepository, PolicyHolderRepository holderRepository,
+			AddOnService addOnService) {
+		super();
+		this.quoteRepository = quoteRepository;
+		this.holderRepository = holderRepository;
+		this.addOnService = addOnService;
+	}
+
+
+
+
+	public Quote send(int policyHolderId, Quote quote) {
+		PolicyHolder holder = holderRepository.findById(policyHolderId)
+				.orElseThrow(()-> new PolicyHolderNotFound("Policy Holder not found"));
+		
+		List<AddOns> addons = addOnService.getByPolicyHolderId(policyHolderId);
+		
+		double premium = holder.getPolicy().getPrice();
+		double addOnPrice = 0.0;
+		for (AddOns addon : addons) {
+		    addOnPrice += addon.getPrice();
+		}
+		double total = premium + addOnPrice;
+		holder.setStatus("QUOTE GENARATED");
+		quote.setPremium(premium);
+		quote.setAddOnPrice(addOnPrice);
+		quote.setTotal(total);
+		quote.setPolicyHolder(holder);
+		quote.setSendDate(LocalDate.now());
+		return quoteRepository.save(quote);
+	}
+
+}
