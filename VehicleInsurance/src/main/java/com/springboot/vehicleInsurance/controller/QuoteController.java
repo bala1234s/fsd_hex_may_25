@@ -1,6 +1,7 @@
 package com.springboot.vehicleInsurance.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ public class QuoteController {
 	 * Aim : To post Quote for the policy to holder
 	 * Path : api/quote/send/{policyHolderId}
 	 * Method : Post
-	 * Input : 
+	 * Input : policyHolderId
 	 * Response : Quote
 	 * 
 	 * */
@@ -29,6 +30,20 @@ public class QuoteController {
 	@PostMapping("/send/{policyHolderId}")
 	public Quote send(@PathVariable int policyHolderId, Quote quote) {
 		return quoteService.send(policyHolderId, quote);
+	}
+	
+	/*
+	 * Aim : To get the Quote by policyHolder id
+	 * Path : api/quote/get-on/{policyHolderId}
+	 * Method : Get
+	 * Input : policyHolderId
+	 * Response : Quote
+	 * 
+	 * */
+	
+	@GetMapping("/get-one/{policyHolderId}")
+	public Quote getQuote(@PathVariable int policyHolderId) {
+		return quoteService.getQuote(policyHolderId);
 	}
 	
 }

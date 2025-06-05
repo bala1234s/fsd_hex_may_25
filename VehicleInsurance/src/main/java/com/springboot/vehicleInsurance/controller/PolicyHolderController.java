@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -145,4 +146,21 @@ public class PolicyHolderController {
                                     @PathVariable int policyId) {
         return holderService.getByCustomerIdVehicleIdPolicyId(customerId, vehicleId, policyId);
     }
+    
+    
+    /*
+     * Aim : Approve the Policy by Officer (Payment should complete before approve policy)
+     * Path : api/policy-holder/approve
+     * Method : PUT
+     * Input : PolicyHolder
+     * Response : PolicyHolder
+     * 
+     * */
+    
+    @PutMapping("/approve")
+    public ResponseEntity<PolicyHolder> approvePolicy(@RequestParam int policyHolderId) {
+        PolicyHolder updatedHolder = holderService.approvePolicy(policyHolderId);
+        return ResponseEntity.ok(updatedHolder);
+    }
+
 }

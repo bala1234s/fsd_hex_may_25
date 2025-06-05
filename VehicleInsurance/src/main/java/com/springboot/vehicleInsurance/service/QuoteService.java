@@ -2,10 +2,10 @@ package com.springboot.vehicleInsurance.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
+import com.springboot.vehicleInsurance.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
-import com.springboot.vehicleInsurance.exception.PolicyHolderNotFound;
+import com.springboot.vehicleInsurance.exception.PolicyHolderNotFoundException;
 import com.springboot.vehicleInsurance.model.AddOns;
 import com.springboot.vehicleInsurance.model.PolicyHolder;
 import com.springboot.vehicleInsurance.model.Quote;
@@ -15,6 +15,8 @@ import com.springboot.vehicleInsurance.repository.QuoteRepository;
 @Service
 public class QuoteService {
 
+    
+
 
 	
 	private QuoteRepository quoteRepository;
@@ -22,7 +24,7 @@ public class QuoteService {
 	private AddOnService addOnService;
 	
 	public QuoteService(QuoteRepository quoteRepository, PolicyHolderRepository holderRepository,
-			AddOnService addOnService) {
+			AddOnService addOnService, ReviewRepository reviewRepository) {
 		super();
 		this.quoteRepository = quoteRepository;
 		this.holderRepository = holderRepository;
@@ -34,7 +36,7 @@ public class QuoteService {
 
 	public Quote send(int policyHolderId, Quote quote) {
 		PolicyHolder holder = holderRepository.findById(policyHolderId)
-				.orElseThrow(()-> new PolicyHolderNotFound("Policy Holder not found"));
+				.orElseThrow(()-> new PolicyHolderNotFoundException("Policy Holder not found"));
 		
 		List<AddOns> addons = addOnService.getByPolicyHolderId(policyHolderId);
 		
@@ -51,6 +53,12 @@ public class QuoteService {
 		quote.setPolicyHolder(holder);
 		quote.setSendDate(LocalDate.now());
 		return quoteRepository.save(quote);
+	}
+
+
+	public Quote getQuote(int policyHolderId) {
+		
+		return quoteRepository.getQuoteByHolderId(policyHolderId);
 	}
 
 }

@@ -30,5 +30,7 @@ public interface PolicyHolderRepository extends JpaRepository<PolicyHolder, Inte
 	@Query("select ph,a from PolicyHolder ph join AddOns a on a.policyHolder.id = ph.id ")
 	List<PolicyHolder> getAllPolicyHolder();
 
+	
+
 
 }

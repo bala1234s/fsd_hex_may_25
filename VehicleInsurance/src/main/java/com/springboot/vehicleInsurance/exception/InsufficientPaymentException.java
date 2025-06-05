@@ -1,11 +1,11 @@
 package com.springboot.vehicleInsurance.exception;
 
-public class PolicyHolderNotFound extends RuntimeException {
+public class InsufficientPaymentException extends RuntimeException {
 private static final long serialVersionUID = 1L;
 	
 	private String message;
 
-	public PolicyHolderNotFound(String message) {
+	public InsufficientPaymentException(String message) {
 		super();
 		this.message = message;
 	}

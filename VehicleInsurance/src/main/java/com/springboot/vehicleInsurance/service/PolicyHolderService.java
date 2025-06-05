@@ -7,10 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.springboot.vehicleInsurance.exception.PaymentNotFoundException;
 import com.springboot.vehicleInsurance.exception.ResourceNotFoundException;
 import com.springboot.vehicleInsurance.model.AddOns;
 import com.springboot.vehicleInsurance.model.Customer;
 import com.springboot.vehicleInsurance.model.EPolicy;
+import com.springboot.vehicleInsurance.model.Payment;
 import com.springboot.vehicleInsurance.model.PolicyHolder;
 import com.springboot.vehicleInsurance.model.Vehicle;
 import com.springboot.vehicleInsurance.repository.CustomerRepository;
@@ -27,14 +29,18 @@ public class PolicyHolderService {
 	private PolicyRepository policyRepository;
 	private VehicleService vehicleService;
 	private AddOnService addOnService;
+	private PaymentService paymentService;
 	
 	/* Logger Inject*/
 	Logger logger = LoggerFactory.getLogger("PolicyHolderService");
 	
 
+	
+
+
 	public PolicyHolderService(PolicyHolderRepository holderRepository, CustomerRepository customerRepository,
 			VehicleRepository vehicleRepository, PolicyRepository policyRepository, VehicleService vehicleService,
-			AddOnService addOnService) {
+			AddOnService addOnService, PaymentService paymentService) {
 		super();
 		this.holderRepository = holderRepository;
 		this.customerRepository = customerRepository;
@@ -42,7 +48,12 @@ public class PolicyHolderService {
 		this.policyRepository = policyRepository;
 		this.vehicleService = vehicleService;
 		this.addOnService = addOnService;
+		this.paymentService = paymentService;
+		
 	}
+
+
+
 
 
 	// Add new policy 
@@ -163,6 +174,23 @@ public class PolicyHolderService {
 				
 		return holderRepository.getByCustomerAndPolicy(customerId, policyId);
 	}
+
+
+	public PolicyHolder approvePolicy(int policyHolderId) {
+	    PolicyHolder holder = holderRepository.findById(policyHolderId)
+	            .orElseThrow(() -> new RuntimeException("Policy Holder Not Found"));
+
+	    Payment payment = paymentService.getPaymentByHolderId(policyHolderId);
+	    if (payment == null) {
+	        throw new PaymentNotFoundException("Payment is not complete yet!!!");
+	    }
+
+	    holder.setActive(true);
+	    holder.setStatus("APPROVED");
+
+	    return holderRepository.save(holder); 
+	}
+
 
 
 
