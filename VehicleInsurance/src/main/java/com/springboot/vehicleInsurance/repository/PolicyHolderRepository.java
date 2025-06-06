@@ -29,6 +29,9 @@ public interface PolicyHolderRepository extends JpaRepository<PolicyHolder, Inte
 
 	@Query("select ph,a from PolicyHolder ph join AddOns a on a.policyHolder.id = ph.id ")
 	List<PolicyHolder> getAllPolicyHolder();
+	
+	@Query("select ph from PolicyHolder ph where ph.vehicle.customer.user.username = ?1")
+	PolicyHolder getPolicyHolderByUsername(String username);
 
 	
 

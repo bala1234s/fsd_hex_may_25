@@ -38,6 +38,8 @@ public class SecurityConfig {
 				.requestMatchers("api/quote/send/{policyHolderId}").hasAuthority("OFFICER")
 				.requestMatchers("api/quote/get-one/{policyHolderId}").hasAnyAuthority("CUSTOMER","OFFICER")
 				.requestMatchers("api/payment/pay").hasAuthority("CUSTOMER")
+				.requestMatchers("api/claim/request/{policyHolderId}").hasAuthority("CUSTOMER")
+				.requestMatchers("api/claim/get-one").hasAuthority("CUSTOMER")
 				.requestMatchers("api/vehicle/add/{customerId}").hasAuthority("CUSTOMER")
 				.requestMatchers("api/policy/apply").hasAuthority("CUSTOMER")
 				.requestMatchers("api/review/add/{customerId}/{policyId}").hasAuthority("CUSTOMER")
