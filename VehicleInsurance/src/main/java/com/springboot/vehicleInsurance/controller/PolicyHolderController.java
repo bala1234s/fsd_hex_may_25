@@ -162,5 +162,5 @@ public class PolicyHolderController {
         PolicyHolder updatedHolder = holderService.approvePolicy(policyHolderId);
         return ResponseEntity.ok(updatedHolder);
     }
-
+    
 }

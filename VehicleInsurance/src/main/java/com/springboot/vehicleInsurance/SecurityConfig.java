@@ -25,25 +25,39 @@ public class SecurityConfig {
 				.requestMatchers("api/user/signup").permitAll()
 				.requestMatchers("api/officer/add").permitAll()
 				.requestMatchers("api/policy/get-all").permitAll()
+				
 				.requestMatchers("api/user/get-token").authenticated()
+				
 				.requestMatchers("api/customer/get-one").hasAnyAuthority("CUSTOMER","OFFICER")
+				
 				.requestMatchers("api/vehicle/get-one/{customerId}").hasAnyAuthority("CUSTOMER","OFFICER")
+				.requestMatchers("api/vehicle/add/{customerId}").hasAuthority("CUSTOMER")
+				
+				.requestMatchers("api/policy/apply").hasAuthority("CUSTOMER")
+				.requestMatchers("api/policy/add").hasAuthority("OFFICER")
+				
 				.requestMatchers("api/policy-holder/get/{customerId}").hasAnyAuthority("CUSTOMER","OFFICER")
 				.requestMatchers("api/policy-holder/get-one/{customerId}/{policyId}").hasAnyAuthority("CUSTOMER","OFFICER")
 				.requestMatchers("api/policy-holder/get-one/{customerId}/{vehicleId}").hasAnyAuthority("CUSTOMER","OFFICER")
 				.requestMatchers("api/policy-holder/get-all").hasAuthority("OFFICER")
 				.requestMatchers("api/policy-holder/approve").hasAuthority("OFFICER")
+				
 				.requestMatchers("api/add-on/get-all").hasAuthority("OFFICER")
 				.requestMatchers("api/add-on/get-all/{policyHolderId}").hasAuthority("OFFICER")
+				
 				.requestMatchers("api/quote/send/{policyHolderId}").hasAuthority("OFFICER")
 				.requestMatchers("api/quote/get-one/{policyHolderId}").hasAnyAuthority("CUSTOMER","OFFICER")
+				.requestMatchers("api/quote/get-addons").hasAnyAuthority("CUSTOMER","OFFICER")
+				
 				.requestMatchers("api/payment/pay").hasAuthority("CUSTOMER")
+				
 				.requestMatchers("api/claim/request/{policyHolderId}").hasAuthority("CUSTOMER")
 				.requestMatchers("api/claim/get-one").hasAuthority("CUSTOMER")
-				.requestMatchers("api/vehicle/add/{customerId}").hasAuthority("CUSTOMER")
-				.requestMatchers("api/policy/apply").hasAuthority("CUSTOMER")
+				.requestMatchers("api/claim/get-all").hasAuthority("OFFICER")
+				.requestMatchers("api/claim/approve").hasAuthority("OFFICER")
+				
 				.requestMatchers("api/review/add/{customerId}/{policyId}").hasAuthority("CUSTOMER")
-				.requestMatchers("api/policy/add").hasAuthority("OFFICER")
+				
 				.anyRequest().authenticated())
 		.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 		.httpBasic(Customizer.withDefaults());

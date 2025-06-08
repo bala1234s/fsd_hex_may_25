@@ -5,7 +5,9 @@ import java.util.List;
 import com.springboot.vehicleInsurance.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
+import com.springboot.vehicleInsurance.dto.QuoteWithAddOnsDto;
 import com.springboot.vehicleInsurance.exception.PolicyHolderNotFoundException;
+import com.springboot.vehicleInsurance.exception.QuoteNotFoundException;
 import com.springboot.vehicleInsurance.model.AddOns;
 import com.springboot.vehicleInsurance.model.PolicyHolder;
 import com.springboot.vehicleInsurance.model.Quote;
@@ -59,6 +61,32 @@ public class QuoteService {
 	public Quote getQuote(int policyHolderId) {
 		
 		return quoteRepository.getQuoteByHolderId(policyHolderId);
+	}
+
+
+
+
+	public QuoteWithAddOnsDto getQuoteWithAddOns( int policyHolderId, QuoteWithAddOnsDto addOnsDto) {
+		
+		
+		// Get Quote By policyHolder
+		Quote quote = getQuote(policyHolderId);
+		if(quote == null) {
+			throw new QuoteNotFoundException("Quote Not Found");
+		}
+		
+		// Get Addons by PolicyHolderID
+		List<AddOns> addOns = addOnService.getByPolicyHolderId(policyHolderId);
+		if(addOns == null) {
+			addOnsDto.setAddOns(null);
+		}
+		//Set Quote in DTO
+		addOnsDto.setQuote(quote);
+		// Set Addons List in DTO
+		addOnsDto.setAddOns(addOns);
+		
+		// Return DTO
+		return addOnsDto;
 	}
 
 }

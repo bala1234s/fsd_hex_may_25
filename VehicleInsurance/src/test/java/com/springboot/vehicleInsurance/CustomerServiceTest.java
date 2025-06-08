@@ -39,7 +39,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void getById_ValidId_ReturnsCustomer() {
+    public void getCustomerTest() {
         when(customerRepository.findById(1)).thenReturn(Optional.of(customer));
 
         Customer result = customerService.getById(1);

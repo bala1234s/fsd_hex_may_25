@@ -6,7 +6,7 @@ import com.springboot.vehicleInsurance.model.AddOns;
 import com.springboot.vehicleInsurance.model.Quote;
 
 
-public class QuoteGenarationDto {
+public class QuoteWithAddOnsDto {
 	
 	private Quote quote;
 	private List<AddOns> addOns;

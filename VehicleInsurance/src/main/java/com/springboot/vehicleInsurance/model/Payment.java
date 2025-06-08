@@ -1,6 +1,7 @@
 package com.springboot.vehicleInsurance.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -62,6 +63,24 @@ public class Payment {
 
 	public void setQuote(Quote quote) {
 		this.quote = quote;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, paid, paidDate, status);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Payment other = (Payment) obj;
+		return id == other.id && Double.doubleToLongBits(paid) == Double.doubleToLongBits(other.paid)
+				&& Objects.equals(paidDate, other.paidDate) && Objects.equals(status, other.status);
 	}
 
 	
