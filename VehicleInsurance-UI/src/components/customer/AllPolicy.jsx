@@ -1,49 +1,57 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Navbar from "../Navbar";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllPolicies } from "../../state/actions/AllPolicyActions";
+import { Link } from "react-router-dom";
 
 function AllPolicy() {
-    let [allPolicy, setAllPolicy] = useState([]);
+    const dispatch = useDispatch();
+    let [allPolicy, ] = useState(useSelector(state => state.allPolicy.allPolicy));
+    console.log(allPolicy);
+    
+    
     useEffect(() => {
-        const getAllPolicy = async () => {
-            try {
-                // Fetching the All Policy
-                const resp = await axios.get("http://localhost:8080/api/policy/get-all");
-                // Store the List of policy 
-                setAllPolicy(resp.data);
+        fetchAllPolicies(dispatch); //<--- fetch all policy from Action (Redux)
 
-            } catch (error) {
-                console.log(error);
-
-            }
-
-        }
-        getAllPolicy();
-    }, []);
+        
+    }, [dispatch]);
 
     return (
-        <div className="container">
+        <div>
+            <Navbar />
 
-            <div className="row">
-                {
-                    allPolicy.map((p) => (
+            <div className="container mt-5 pt-5">
+                <div className="row">
+                    <div className="col-md-12 ">
+                        <h1>All Policies</h1>
+                        <p className="lead">Here is the list of all available policies.</p>
+                    </div>
 
-                        <div className="col-sm-6" key={p.id}>
-                            <div className="card" >
-                                <div className="card-body">
-                                    <h5 className="card-title">Policy: { p.policyName}</h5>
-                                    <p className="card-text">Policy Type: {p.policyType}</p>
-                                    <p className="card-text">Description: {p.description}</p>
-                                    <p className="card-text">Price: {p.price}</p>
-                                    <a href="#" className="btn btn-primary">Get Quote</a>
+                </div>
+                <div className="row">
+                    {
+                        allPolicy.map((p) => (
+
+                            <div className="col-sm-6" key={p.id}>
+                                <div className="card" >
+                                    <div className="card-body">
+                                        <h5 className="card-title">Policy: {p.policyName}</h5>
+                                        <p className="card-text">Policy Type: {p.policyType}</p>
+                                        <p className="card-text">Description: {p.description}</p>
+                                        <p className="card-text">Price: {p.price}</p>
+                                        <Link to={`/policyDetails/${p.id}`} className="btn btn-primary">Get Quote</Link>
+                                    </div>
+                                    <div className="card-footer">Created Date: {p.createdDate}</div>
+                                   
                                 </div>
-                                <div className="card-footer">Created Date: { p.createdDate}</div>
                             </div>
-                        </div>
-                    ))
-                }
+                        ))
+                    }
+
+                </div>
 
             </div>
-
         </div>
     )
 }

@@ -3,6 +3,7 @@ package com.springboot.vehicleInsurance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,11 +23,13 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf((csrf) -> csrf.disable())
 				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers("api/customer/add").permitAll()
 						.requestMatchers("api/user/signup").permitAll()
 						.requestMatchers("api/officer/add").permitAll()
 						.requestMatchers("api/policy/get-all").permitAll()
 						.requestMatchers("api/policy/get-all-v2").permitAll()
+						.requestMatchers("api/policy/get-one/{policyId}").permitAll()
 
 						.requestMatchers("api/user/get-token").permitAll()
 						.requestMatchers("api/user/details").permitAll()
@@ -64,6 +67,7 @@ public class SecurityConfig {
 						.requestMatchers("api/claim/approve").hasAuthority("OFFICER")
 
 						.requestMatchers("api/review/add/{customerId}/{policyId}").hasAuthority("CUSTOMER")
+						.requestMatchers("api/review/get/{policyId}").permitAll() 
 
 						.anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import SideBar from './SideBar';
 import '../css/CustomerDashboard.css';
 import Logout from '../Logout';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar';
 
 const CustomerDashboard = () => {
     // Navigate Hook
@@ -17,19 +18,15 @@ const CustomerDashboard = () => {
 
     })
     return (
-        <div className="dashboard-container">
+        <div>
+           
+            <div className="dashboard-container ">
             <SideBar />
-            <div className="dashboard-content">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12"><h1>Welcome, {name}</h1></div>
-                   
-                    </div>
-                </div>
+            <Outlet />
 
             </div>
-            
         </div>
+        
     );
 };
 

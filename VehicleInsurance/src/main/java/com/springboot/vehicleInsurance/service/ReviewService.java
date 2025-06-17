@@ -1,5 +1,7 @@
 package com.springboot.vehicleInsurance.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.springboot.vehicleInsurance.exception.ResourceNotFoundException;
@@ -41,6 +43,14 @@ public class ReviewService {
 		// Attach Policy Holder in Review
 		review.setPolicyHolder(holder);
 		return reviewRepository.save(review);
+	}
+
+
+
+
+	public List<Review> getReviewByPolicyId(int policyId) {
+		
+		return reviewRepository.getReviewByPolicyId(policyId);
 	}
 
 }
