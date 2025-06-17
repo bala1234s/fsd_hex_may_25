@@ -2,7 +2,6 @@ package com.springboot.vehicleInsurance.model;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +18,7 @@ public class Customer {
 	private int id;
 	private String name;
 	private LocalDate DOB;
+	private String contact;
 	private int age;
 	private String address;
 	private String aadharNumber;
@@ -46,17 +46,29 @@ public class Customer {
 	}
 	
 	
-	public int getAge() {
-	    return age;
+	
+	
+	
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 	public void setDOB(LocalDate dOB) {
 	    this.DOB = dOB;
-	    this.age = Period.between(this.DOB, LocalDate.now()).getYears(); 
+		this.age = Period.between(this.DOB, LocalDate.now()).getYears();
+		
 	}
 
 	public LocalDate getDOB() {
 		return DOB;
+	}
+	
+	public int getAge() {
+		return age;
 	}
 	public void setAge(int age) {
 		this.age = age;
@@ -81,7 +93,17 @@ public class Customer {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(DOB, aadharNumber, address, age, id, name, panNumber);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((DOB == null) ? 0 : DOB.hashCode());
+		result = prime * result + ((contact == null) ? 0 : contact.hashCode());
+		result = prime * result + age;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((aadharNumber == null) ? 0 : aadharNumber.hashCode());
+		result = prime * result + ((panNumber == null) ? 0 : panNumber.hashCode());
+		return result;
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -92,10 +114,43 @@ public class Customer {
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		return Objects.equals(DOB, other.DOB) && Objects.equals(aadharNumber, other.aadharNumber)
-				&& Objects.equals(address, other.address) && age == other.age && id == other.id
-				&& Objects.equals(name, other.name) && Objects.equals(panNumber, other.panNumber);
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (DOB == null) {
+			if (other.DOB != null)
+				return false;
+		} else if (!DOB.equals(other.DOB))
+			return false;
+		if (contact == null) {
+			if (other.contact != null)
+				return false;
+		} else if (!contact.equals(other.contact))
+			return false;
+		if (age != other.age)
+			return false;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (aadharNumber == null) {
+			if (other.aadharNumber != null)
+				return false;
+		} else if (!aadharNumber.equals(other.aadharNumber))
+			return false;
+		if (panNumber == null) {
+			if (other.panNumber != null)
+				return false;
+		} else if (!panNumber.equals(other.panNumber))
+			return false;
+		return true;
 	}
+	
 	
 	
 	

@@ -44,7 +44,8 @@ public class CustomerService {
 		
 		// Attach User in Customer
 		customer.setUser(user);
-		
+		System.out.println(customer.getAge());
+		System.out.println(customer.getDOB());
 		// Save Customer in DB
 		return customerRepository.save(customer);
 	}

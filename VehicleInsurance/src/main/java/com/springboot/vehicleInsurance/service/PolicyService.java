@@ -38,4 +38,9 @@ public class PolicyService {
 		return policyRepository.findAll(pageable).getContent();
 	}
 
+	public List<EPolicy> getAllV2() {
+		
+		return policyRepository.findAll();
+	}
+
 }
