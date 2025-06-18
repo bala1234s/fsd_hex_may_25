@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../Navbar";
-
+import { Rating } from "primereact/rating";
 function PolicyDetails() {
     const param = useParams();
     const [policyDetail, setPolicyDetail] = useState({});
@@ -72,7 +72,7 @@ function PolicyDetails() {
                                             <p><strong>Name:</strong> {review.policyHolder.vehicle.customer.name}</p>
                                             <p><strong>Vehicle:</strong> {review.policyHolder.vehicle.vehicleType}</p>
                                             <p><strong>Comment:</strong> {review.comments}</p>
-                                            <p><strong>Rating:</strong> {"⭐".repeat(review.rating)} ({review.rating}/5)</p>
+                                            <p><Rating value={review.rating} readOnly cancel={false} /></p>
                                         </div>
                                     </div>
                                 </div>

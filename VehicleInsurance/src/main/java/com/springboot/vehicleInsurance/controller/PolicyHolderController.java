@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import com.springboot.vehicleInsurance.util.JwtUtil;
 
 @RestController
 @RequestMapping("api/policy-holder")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PolicyHolderController {
 	@Autowired
 	private PolicyHolderService holderService;
@@ -83,6 +85,17 @@ public class PolicyHolderController {
     @GetMapping("/get/{customerId}")
     public List<PolicyHolder> getByCustomerId(@PathVariable int customerId) {
         return holderService.getByCustomerId(customerId);
+    }
+    
+    /*
+     * Aim : Get policy holders by customer ID
+     * Path : api/policy/get/{customerId}
+     * Method : GET
+     * Response : List<PolicyHolder>
+     */
+    @GetMapping("/get")
+    public List<PolicyHolder> getByCustomerUsername(Principal principal) {
+        return holderService.getByCustomerUsername(principal.getName());
     }
     
     

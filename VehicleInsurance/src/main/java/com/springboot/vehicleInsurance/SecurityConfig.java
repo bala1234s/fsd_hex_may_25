@@ -43,6 +43,7 @@ public class SecurityConfig {
 						.requestMatchers("api/policy/add").hasAuthority("OFFICER")
 
 						.requestMatchers("api/policy-holder/get/{customerId}").hasAnyAuthority("CUSTOMER", "OFFICER")
+						.requestMatchers("api/policy-holder/get").hasAuthority("CUSTOMER")
 						.requestMatchers("api/policy-holder/get-one/{customerId}/{policyId}")
 						.hasAnyAuthority("CUSTOMER", "OFFICER")
 

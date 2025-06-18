@@ -63,7 +63,7 @@ public class CustomerController {
 	@GetMapping("api/customer/get-one")
 	public ResponseEntity<Customer> getOne(Principal principal) {
 		String username = principal.getName();
-		return ResponseEntity.status(HttpStatus.FOUND).body(customerService.getByUsername(username));
+		return ResponseEntity.status(HttpStatus.OK).body(customerService.getByUsername(username));
 		
 	}
 	/*

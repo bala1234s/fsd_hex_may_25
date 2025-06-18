@@ -6,6 +6,10 @@ import CustomerRegister from "./components/customer/CustomerRegister"
 import CustomerHome from "./components/customer/CustomerHome"
 import Home from "./components/Home"
 import PolicyDetails from "./components/customer/PolicyDetails"
+import MyInsurance from "./components/customer/MyInsurance"
+import Profile from "./components/customer/Profile"
+
+
 
 function App() {
   return (
@@ -17,7 +21,8 @@ function App() {
         <Route path="policyDetails/:pid" element={<PolicyDetails />}></Route>
         <Route path="/customer" element={<CustomerDashboard />}>
           <Route path="customerHome" element={<CustomerHome />}></Route>
-        
+          <Route path="my-insurance" element={<MyInsurance />}></Route>
+          <Route path="profile" element={<Profile />}></Route>
         </Route>
         <Route path="customerRegister" element={<CustomerRegister />}></Route>
       </Routes>

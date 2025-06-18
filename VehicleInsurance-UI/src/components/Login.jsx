@@ -1,6 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { Toast } from 'primereact/toast';
+import { Button } from "primereact/button";
 
 function Login() {
     let [username, setUsername] = useState("");
@@ -10,6 +13,16 @@ function Login() {
     // Navigator
     let navigate = useNavigate();
 
+    // Toast message
+    const toast = useRef(null);
+
+    const showSuccess = (message) => {
+        toast.current.show({ severity: 'success', summary: 'Success', detail: message, life: 3000 });
+    }
+
+    const showError = (message) => {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: message, life: 3000 });
+    }
     const login = async () => {
         try {
             // Encode the username and password in base64 format
@@ -31,21 +44,26 @@ function Login() {
 
             // set user name in localStorage 
             localStorage.setItem('name', userDetails.data.name);
+            
+            showSuccess("Login Success")// <-- Toast Message Login Success
 
-            // Navigate based on role
-            switch (userDetails.data.user.role) {
-                case "CUSTOMER":
-                    navigate("/customer");
-                    break;
-                case "OFFICER":
-                    break;
-                default:
-                    break;
-            }
-            setMsg("Login Success!!!")
+            setTimeout(() => { 
+
+                // Navigate based on role
+                switch (userDetails.data.user.role) {
+                    case "CUSTOMER":
+                        navigate("/customer/customerHome");
+                        break;
+                    case "OFFICER":
+                        break;
+                    default:
+                        break;
+                }
+            },1000)
+
 
         } catch (error) {
-            setMsg("Invalid Credentials")
+            showError("Invaild Credentials");
             console.log(error);
 
         }
@@ -57,6 +75,7 @@ function Login() {
     return (
 
         <div className="container" >
+            <Toast style={{ zIndex: 1000 }} ref={toast} />
             {/* Giving space from top */}
             <div style={{ marginTop: "10%" }}></div>
             <div className="row ">
@@ -73,12 +92,7 @@ function Login() {
                         }}>Login</div>
                         {/* Card Body Start */}
                         <div className="card-body">
-                            {
-                                msg !==""?
-                                <div class="alert alert-primary">
-                                    {msg}
-                                </div>:""
-                            } 
+
                             <div className="mb-3">
                                 <label className="form-label">Username</label>
                                 <input type="text" className="form-control" placeholder="Enter username" onChange={($e) => setUsername($e.target.value)} />
@@ -89,6 +103,7 @@ function Login() {
                             </div>
                             <div className="mt-3">
                                 <button className="btn btn-primary" onClick={() => login()}>Login</button>
+
                             </div>
 
                         </div>

@@ -1,0 +1,73 @@
+/* Home.css */
+
+body {
+    background: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+h1,
+h2 {
+    color: #333;
+    font-weight: 600;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px !important;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-title {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.btn-outline-primary {
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* .btn-primary {
+    border-radius: 50px;
+    padding: 12px 30px;
+    font-weight: 600;
+    background: linear-gradient(45deg, #007bff, #00d4ff);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #00d4ff, #007bff);
+    color: #fff;
+} */
+
+.list-group-item {
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    padding-left: 0;
+    color: #555;
+}
+
+
+
+ul.list-group {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.container {
+    max-width: 1200px;
+}

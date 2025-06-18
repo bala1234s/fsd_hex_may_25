@@ -1,4 +1,5 @@
 function CustomerHome() { 
+    let name = localStorage.getItem('name');
     return (
         <div className="dashboard-content">
             <div className="container">

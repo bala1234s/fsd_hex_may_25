@@ -1,0 +1,85 @@
+/* Container Padding */
+.container {
+    padding: 30px;
+}
+
+/* Center Heading */
+.text-center {
+    text-align: center;
+}
+
+/* Card Styling */
+.card {
+    background: #ffffff;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Header (Neutral Gray to Black Gradient) */
+.card-header {
+    background: linear-gradient(135deg, #333333 0%, #000000 100%) !important;
+    color: #fff !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 15px;
+}
+
+/* Title Text */
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Card Body Text */
+.card-body {
+    font-size: 0.95rem;
+    color: #4f4f4f;
+}
+
+/* Unordered List Styling */
+.card-body ul {
+    padding-left: 15px;
+}
+
+.card-body ul li {
+    margin-bottom: 5px;
+}
+
+/* Footer: Light Gray */
+.card-footer {
+    background-color: #f4f4f4 !important;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    text-align: center;
+}
+
+/* Badges for Status */
+.badge {
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+/* Status Colors: Green and Red */
+.bg-success {
+    background-color: #2ecc71 !important;
+    /* Fresh Green */
+}
+
+.bg-danger {
+    background-color: #e74c3c !important;
+    /* Soft Red */
+}
+
+/* Muted Text */
+.text-muted {
+    color: #7f8c8d !important;
+    /* Grayish Text */
+}

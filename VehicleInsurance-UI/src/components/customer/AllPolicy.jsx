@@ -22,7 +22,7 @@ function AllPolicy() {
             <Navbar />
 
             <div className="container mt-5 pt-5">
-                <div className="row">
+                <div className="row pt-5">
                     <div className="col-md-12 ">
                         <h1>All Policies</h1>
                         <p className="lead">Here is the list of all available policies.</p>

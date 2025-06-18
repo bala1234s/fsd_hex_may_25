@@ -195,5 +195,15 @@ public class PolicyHolderService {
 
 
 
+	public List<PolicyHolder> getByCustomerUsername(String username) {
+		
+		
+		return holderRepository.getByCustomerUsername(username);
+	}
+
+
+
+
+
 
 }
