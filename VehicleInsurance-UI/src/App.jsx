@@ -8,6 +8,7 @@ import Home from "./components/Home"
 import PolicyDetails from "./components/customer/PolicyDetails"
 import MyInsurance from "./components/customer/MyInsurance"
 import Profile from "./components/customer/Profile"
+import MyVehicle from "./components/customer/MyVehicle"
 
 
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="customerHome" element={<CustomerHome />}></Route>
           <Route path="my-insurance" element={<MyInsurance />}></Route>
           <Route path="profile" element={<Profile />}></Route>
+          <Route path="vehicle" element={<MyVehicle />}></Route>
         </Route>
         <Route path="customerRegister" element={<CustomerRegister />}></Route>
       </Routes>

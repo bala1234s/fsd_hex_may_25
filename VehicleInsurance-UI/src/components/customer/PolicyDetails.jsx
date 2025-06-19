@@ -72,7 +72,7 @@ function PolicyDetails() {
                                             <p><strong>Name:</strong> {review.policyHolder.vehicle.customer.name}</p>
                                             <p><strong>Vehicle:</strong> {review.policyHolder.vehicle.vehicleType}</p>
                                             <p><strong>Comment:</strong> {review.comments}</p>
-                                            <p><Rating value={review.rating} readOnly cancel={false} /></p>
+                                            <div><Rating value={review.rating} readOnly cancel={false} /></div>
                                         </div>
                                     </div>
                                 </div>

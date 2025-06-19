@@ -58,4 +58,11 @@ public class VehicleService {
 		return vehicleRepository.getVehicleByCustomerId(customerId, vehicleId);
 	}
 
+
+
+	public List<Vehicle> getCustomerByUsername(String username) {
+		
+		return vehicleRepository.getCustomerByUsername(username);
+	}
+
 }

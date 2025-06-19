@@ -15,4 +15,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer>{
 	@Query("select v from Vehicle v where v.customer.id = ?1 AND v.id = ?2")
 	Vehicle getVehicleByCustomerId(int customerId, int vehicleId);
 
+	@Query("select v from Vehicle v where v.customer.user.username = ?1")
+	List<Vehicle> getCustomerByUsername(String username);
+
 }

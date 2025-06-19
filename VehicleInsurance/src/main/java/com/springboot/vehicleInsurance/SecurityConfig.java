@@ -36,7 +36,8 @@ public class SecurityConfig {
 
 						.requestMatchers("api/customer/get-one").hasAnyAuthority("CUSTOMER", "OFFICER")
 
-						.requestMatchers("api/vehicle/get-one/{customerId}").hasAnyAuthority("CUSTOMER", "OFFICER")
+						.requestMatchers("api/vehicle/get-one/{customerId}").hasAuthority("CUSTOMER")
+						.requestMatchers("api/vehicle/get").hasAuthority("CUSTOMER")
 						.requestMatchers("api/vehicle/add/{customerId}").hasAuthority("CUSTOMER")
 
 						.requestMatchers("api/policy/apply").hasAuthority("CUSTOMER")

@@ -39,6 +39,8 @@ public class CustomerController {
 		
 	}
 	
+	
+	
 	/*
 	 * Aim : Get all Customer from DB
 	 * Path : localhost:8080/api/customer/get-all
@@ -66,6 +68,8 @@ public class CustomerController {
 		return ResponseEntity.status(HttpStatus.OK).body(customerService.getByUsername(username));
 		
 	}
+	
+	
 	/*
 	 * Aim : Delete Customer by CustomerId
 	 * Path : localhost:8080/api/customer/delete-one/id
