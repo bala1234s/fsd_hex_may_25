@@ -31,7 +31,7 @@ public class CustomerServiceTest {
         customer = new Customer();
         customer.setId(1);
         customer.setName("John Doe");
-        customer.setDOB(LocalDate.of(2000, 1, 1));
+        customer.setdob(LocalDate.of(2000, 1, 1));
         customer.setAddress("Chennai");
         customer.setAadharNumber("123456789012");
         customer.setPanNumber("ABCDE1234F");

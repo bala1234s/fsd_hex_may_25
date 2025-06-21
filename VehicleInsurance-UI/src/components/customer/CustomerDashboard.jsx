@@ -17,7 +17,7 @@ const CustomerDashboard = () => {
     useEffect(() => {
         let token = localStorage.getItem('token');
         if (token == null || token == "" || token == undefined) {
-            navigate('/');
+            navigate('/login');
         }
 
 

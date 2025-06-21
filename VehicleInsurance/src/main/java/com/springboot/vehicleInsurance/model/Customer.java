@@ -17,13 +17,13 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.AUTO) 
 	private int id;
 	private String name;
-	private LocalDate DOB;
+	private LocalDate dob;
 	private String contact;
 	private int age;
 	private String address;
 	private String aadharNumber;
 	private String panNumber;
-	
+	private String profilePic;
 	@OneToOne
 	private User user;
 	public User getUser() {
@@ -45,10 +45,18 @@ public class Customer {
 		this.name = name;
 	}
 	
-	
-	
-	
-	
+	public LocalDate getDob() {
+		return dob;
+	}
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
+	}
+	public String getProfilePic() {
+		return profilePic;
+	}
+	public void setProfilePic(String profilePic) {
+		this.profilePic = profilePic;
+	}
 	public String getContact() {
 		return contact;
 	}
@@ -57,14 +65,14 @@ public class Customer {
 		this.contact = contact;
 	}
 
-	public void setDOB(LocalDate dOB) {
-	    this.DOB = dOB;
-		this.age = Period.between(this.DOB, LocalDate.now()).getYears();
+	public void setdob(LocalDate dob) {
+	    this.dob = dob;
+		this.age = Period.between(this.dob, LocalDate.now()).getYears();
 		
 	}
 
-	public LocalDate getDOB() {
-		return DOB;
+	public LocalDate getdob() {
+		return dob;
 	}
 	
 	public int getAge() {
@@ -97,7 +105,7 @@ public class Customer {
 		int result = 1;
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((DOB == null) ? 0 : DOB.hashCode());
+		result = prime * result + ((dob == null) ? 0 : dob.hashCode());
 		result = prime * result + ((contact == null) ? 0 : contact.hashCode());
 		result = prime * result + age;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
@@ -121,10 +129,10 @@ public class Customer {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (DOB == null) {
-			if (other.DOB != null)
+		if (dob == null) {
+			if (other.dob != null)
 				return false;
-		} else if (!DOB.equals(other.DOB))
+		} else if (!dob.equals(other.dob))
 			return false;
 		if (contact == null) {
 			if (other.contact != null)

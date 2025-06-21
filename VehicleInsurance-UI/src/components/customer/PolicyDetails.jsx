@@ -51,7 +51,7 @@ function PolicyDetails() {
                                 <p><strong>Created Date:</strong> {policyDetail.createdDate}</p>
                             </div>
                             <div className="card-footer text-center bg-light">
-                                <Link to="/login" className="btn btn-primary btn-lg apply-btn">
+                                <Link to={`/customer/apply-policy/${ policyDetail.id}`} className="btn btn-primary btn-lg apply-btn">
                                     Apply for Policy
                                 </Link>
                             </div>

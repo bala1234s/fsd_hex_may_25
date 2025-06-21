@@ -5,7 +5,7 @@ function Logout() {
     let navigate = useNavigate();
     const logOut = () => {
         localStorage.clear();
-        navigate('/');
+        navigate('/login');
     }
 
     return (

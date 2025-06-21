@@ -45,7 +45,7 @@ public class CustomerService {
 		// Attach User in Customer
 		customer.setUser(user);
 		System.out.println(customer.getAge());
-		System.out.println(customer.getDOB());
+		System.out.println(customer.getdob());
 		// Save Customer in DB
 		return customerRepository.save(customer);
 	}
@@ -81,8 +81,8 @@ public class CustomerService {
 	    if (updateCustomer.getName() != null) {
 	        customer.setName(updateCustomer.getName());
 	    }
-	    if (updateCustomer.getDOB() != null) {
-	        customer.setDOB(updateCustomer.getDOB()); 
+	    if (updateCustomer.getdob() != null) {
+	        customer.setdob(updateCustomer.getdob()); 
 	    }
 	    if (updateCustomer.getAddress() != null) {
 	        customer.setAddress(updateCustomer.getAddress());

@@ -87,14 +87,14 @@ public class CustomerController {
 	
 	/*
 	 * Aim : Update Customer by CustomerId
-	 * Path : localhost:8080/api/customer/update/{id}
+	 * Path : localhost:8080/api/customer/update/{customerId}
 	 * Method : Put
 	 * Input : CustomerId , updatedCustomer
 	 * */
 	
-	@PutMapping("api/customer/update/{id}")
-	public ResponseEntity<Customer> update(@PathVariable int id ,@RequestBody Customer updateCustomer) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.update(id, updateCustomer));
+	@PutMapping("api/customer/update/{customerId}")
+	public ResponseEntity<Customer> update(@PathVariable int customerId ,@RequestBody Customer updateCustomer) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.update(customerId, updateCustomer));
 		
 		
 	}

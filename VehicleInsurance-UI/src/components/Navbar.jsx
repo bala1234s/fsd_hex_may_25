@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./css/Navbar.css"; 
+import Logout from "./Logout";
 
 function Navbar() { 
 
@@ -13,7 +14,7 @@ function Navbar() {
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div className="collapse navbar-collapse" id="navbarNavAltMarkup" style={{ justifyContent: "space-between" }}>
                         <div className="navbar-nav">
                             
                             <div><Link to={"/"} className="nav-link active" aria-current="page" href="#">Home</Link></div>
@@ -21,6 +22,13 @@ function Navbar() {
                             <div><Link className="nav-link" href="#">Contact</Link></div>
                             
                             
+                        </div>
+                        <div>
+                            {
+                                localStorage.getItem("token") !== null && localStorage.getItem("token") !== "" && localStorage.getItem("token") !== undefined
+                                    ? <Logout />
+                                    : <Link to={"/login"} className="btn btn-primary">Login</Link>
+                            }
                         </div>
                     </div>
                 </div>

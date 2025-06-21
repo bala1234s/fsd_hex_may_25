@@ -14,6 +14,7 @@ function MyVehicle() {
     const [showAddDialog, setShowAddDialog] = useState(false);
 
     useEffect(() => {
+        // Function to fetch customer and vehicle data
         const getCustomerAndVehicle = () => {
             axios.get("http://localhost:8080/api/customer/get-one", {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }

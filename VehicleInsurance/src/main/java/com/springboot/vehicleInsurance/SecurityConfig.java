@@ -35,7 +35,7 @@ public class SecurityConfig {
 						.requestMatchers("api/user/details").permitAll()
 
 						.requestMatchers("api/customer/get-one").hasAnyAuthority("CUSTOMER", "OFFICER")
-
+						.requestMatchers("api/customer/update/{customerId}").hasAuthority("CUSTOMER")
 						.requestMatchers("api/vehicle/get-one/{customerId}").hasAuthority("CUSTOMER")
 						.requestMatchers("api/vehicle/get").hasAuthority("CUSTOMER")
 						.requestMatchers("api/vehicle/add/{customerId}").hasAuthority("CUSTOMER")
@@ -57,6 +57,8 @@ public class SecurityConfig {
 						.requestMatchers("api/add-on/get-all").hasAuthority("OFFICER")
 						.requestMatchers("api/add-on/get-all/{policyHolderId}").hasAuthority("OFFICER")
 
+						.requestMatchers("api/addons/details/add").hasAuthority("OFFICER")
+						.requestMatchers("api/addons/details/get-all").permitAll()
 						.requestMatchers("api/quote/send/{policyHolderId}").hasAuthority("OFFICER")
 						.requestMatchers("api/quote/get-one/{policyHolderId}").hasAnyAuthority("CUSTOMER", "OFFICER")
 						.requestMatchers("api/quote/get-addons").hasAnyAuthority("CUSTOMER", "OFFICER")

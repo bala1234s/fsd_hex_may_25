@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { Toast } from 'primereact/toast';
+
 import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
 
 function Login() {
     let [username, setUsername] = useState("");
@@ -55,6 +56,7 @@ function Login() {
                         navigate("/customer/customerHome");
                         break;
                     case "OFFICER":
+                        navigate("/officer/officerHome")
                         break;
                     default:
                         break;
@@ -109,7 +111,7 @@ function Login() {
                         </div>
                         {/* Card Body end */}
 
-                        <div className="card-footer">Don't have account? <a href="">sign up</a> here</div>
+                        <div className="card-footer">Don't have account? <Link to={"/customerRegister"}>sign up</Link> here</div>
                     </div>
                     {/* Card End */}
                 </div>
