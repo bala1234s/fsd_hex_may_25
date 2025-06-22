@@ -45,12 +45,10 @@ public class Customer {
 		this.name = name;
 	}
 	
-	public LocalDate getDob() {
-		return dob;
-	}
-	public void setDob(LocalDate dob) {
-		this.dob = dob;
-	}
+//	public LocalDate getDob() {
+//		return dob;
+//	}
+	
 	public String getProfilePic() {
 		return profilePic;
 	}

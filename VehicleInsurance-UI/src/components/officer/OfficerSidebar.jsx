@@ -19,8 +19,8 @@ const SideBar = () => {
 
             <Sidebar id="sidebar" visible={visible} onHide={() => setVisible(false)} role="region">
                 <ul className="sidebar-nav">
-                    <Link to="/customer/customerHome"> <li><FaHome style={{ marginRight: "8px" }} /> Dashboard</li></Link>
-                    <Link to={"/getAllPolicy"}> <li><IoDocumentAttach style={{ marginRight: "8px" }} />Apply Insurance</li></Link>
+                    <Link to="/officer/officerHome"> <li><FaHome style={{ marginRight: "8px" }} /> Dashboard</li></Link>
+                    <Link to={"/officer/proposal"}> <li><IoDocumentAttach style={{ marginRight: "8px" }} />Proposal</li></Link>
                     <Link to={"/customer/my-insurance"}> <li><IoDocumentAttach style={{ marginRight: "8px" }} /> My Insurance</li></Link>
                     <Link to={"/customer/profile"}><li><FaUser style={{ marginRight: "8px" }} /> Profile</li></Link>
                     <Link to={"/customer/vehicle"}><li><FaCarSide style={{ marginRight: "8px" }} /> My Vehicle</li></Link>

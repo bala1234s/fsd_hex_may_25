@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.springboot.vehicleInsurance.dto.PolicyHolderRequest;
 import com.springboot.vehicleInsurance.exception.PaymentNotFoundException;
 import com.springboot.vehicleInsurance.exception.ResourceNotFoundException;
 import com.springboot.vehicleInsurance.model.AddOns;
@@ -15,6 +16,7 @@ import com.springboot.vehicleInsurance.model.EPolicy;
 import com.springboot.vehicleInsurance.model.Payment;
 import com.springboot.vehicleInsurance.model.PolicyHolder;
 import com.springboot.vehicleInsurance.model.Vehicle;
+import com.springboot.vehicleInsurance.repository.AddOnRepository;
 import com.springboot.vehicleInsurance.repository.CustomerRepository;
 import com.springboot.vehicleInsurance.repository.PolicyHolderRepository;
 import com.springboot.vehicleInsurance.repository.PolicyRepository;
@@ -29,6 +31,7 @@ public class PolicyHolderService {
 	private PolicyRepository policyRepository;
 	private VehicleService vehicleService;
 	private AddOnService addOnService;
+	private AddOnRepository addOnRepository;
 	private PaymentService paymentService;
 	
 	/* Logger Inject*/
@@ -36,11 +39,9 @@ public class PolicyHolderService {
 	
 
 	
-
-
 	public PolicyHolderService(PolicyHolderRepository holderRepository, CustomerRepository customerRepository,
 			VehicleRepository vehicleRepository, PolicyRepository policyRepository, VehicleService vehicleService,
-			AddOnService addOnService, PaymentService paymentService) {
+			AddOnService addOnService, AddOnRepository addOnRepository, PaymentService paymentService) {
 		super();
 		this.holderRepository = holderRepository;
 		this.customerRepository = customerRepository;
@@ -48,8 +49,8 @@ public class PolicyHolderService {
 		this.policyRepository = policyRepository;
 		this.vehicleService = vehicleService;
 		this.addOnService = addOnService;
+		this.addOnRepository = addOnRepository;
 		this.paymentService = paymentService;
-		
 	}
 
 
@@ -200,6 +201,24 @@ public class PolicyHolderService {
 		
 		return holderRepository.getByCustomerUsername(username);
 	}
+
+
+
+	public List<PolicyHolderRequest> getAllWithAddons() {
+	    List<PolicyHolderRequest> list = new ArrayList<>();
+	    
+	    List<PolicyHolder> policyHolders = holderRepository.findAll();
+	    
+	    for (PolicyHolder p : policyHolders) {
+	        PolicyHolderRequest dto = new PolicyHolderRequest();
+	        dto.setHolder(p);
+	        dto.setAddOns(addOnRepository.getByPolicyHolderId(p.getId())); // you need this method in repository
+	        list.add(dto);
+	    }
+	    
+	    return list;
+	}
+
 
 
 

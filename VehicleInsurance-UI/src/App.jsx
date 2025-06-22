@@ -12,6 +12,7 @@ import MyVehicle from "./components/customer/MyVehicle"
 import ApplyPolicy from "./components/customer/ApplyPolicy"
 import OfficerDashboard from "./components/officer/OfficerDashboard"
 import OfficerHome from "./components/officer/OfficerHome"
+import Proposal from "./components/officer/Proposal"
 
 
 
@@ -35,7 +36,8 @@ function App() {
 
         {/* Officer Router */}
         <Route path="/officer" element={<OfficerDashboard />}>
-          <Route path="officerHome" element={ <OfficerHome/>}></Route>
+          <Route path="officerHome" element={<OfficerHome />}></Route>
+          <Route path="proposal" element={ <Proposal />}></Route>
         
         </Route>
       </Routes>

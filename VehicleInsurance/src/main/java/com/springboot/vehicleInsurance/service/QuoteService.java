@@ -40,18 +40,11 @@ public class QuoteService {
 		PolicyHolder holder = holderRepository.findById(policyHolderId)
 				.orElseThrow(()-> new PolicyHolderNotFoundException("Policy Holder not found"));
 		
-		List<AddOns> addons = addOnService.getByPolicyHolderId(policyHolderId);
 		
-		double premium = holder.getPolicy().getPrice();
-		double addOnPrice = 0.0;
-		for (AddOns addon : addons) {
-		    addOnPrice += addon.getPrice();
-		}
-		double total = premium + addOnPrice;
-		holder.setStatus("QUOTE GENARATED");
-		quote.setPremium(premium);
-		quote.setAddOnPrice(addOnPrice);
-		quote.setTotal(total);
+		
+
+		holder.setStatus("QUOTE GENARATED"); 
+
 		quote.setPolicyHolder(holder);
 		quote.setSendDate(LocalDate.now());
 		return quoteRepository.save(quote);

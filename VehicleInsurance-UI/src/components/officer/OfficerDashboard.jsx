@@ -6,13 +6,17 @@ function OfficerDashboard() {
     return (
         <div>
             <Navbar />
-            <div className="dashboard-container pt-5">
-                <div className="m-5 p-5" style={{ position: "fixed", zIndex: 1000 }}>
-                    <OfficerSidebar />
+            <div className="dashboard-container pt-5 dashboard-content">
+                <div style={{ position: "fixed", zIndex: 100, paddingTop:'4rem'}}>
+
+                    <OfficerSidebar className="m-5 p-5"  />
                 </div>
-                <div className="dashboard-content">
-                    <Outlet />
+                <div style={{marginTop:'3rem'}}>
+                    <Outlet style={{ padding: '8rem' }} />
+
                 </div>
+           
+             
             </div>
 
         </div>

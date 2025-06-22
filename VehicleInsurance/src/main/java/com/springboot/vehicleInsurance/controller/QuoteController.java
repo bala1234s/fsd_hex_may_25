@@ -3,6 +3,7 @@ package com.springboot.vehicleInsurance.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.springboot.vehicleInsurance.service.QuoteService;
 
 @RestController
 @RequestMapping("api/quote")
+@CrossOrigin(origins = "http://localhost:5173")
 public class QuoteController {
 	
 	@Autowired
@@ -32,7 +34,7 @@ public class QuoteController {
 	 * */
 	
 	@PostMapping("/send/{policyHolderId}")
-	public Quote send(@PathVariable int policyHolderId, Quote quote) {
+	public Quote send(@PathVariable int policyHolderId, @RequestBody Quote quote) {
 		return quoteService.send(policyHolderId, quote);
 	}
 	

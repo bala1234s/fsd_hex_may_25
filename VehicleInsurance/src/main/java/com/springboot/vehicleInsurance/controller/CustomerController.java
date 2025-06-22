@@ -29,7 +29,7 @@ public class CustomerController {
 	 * Path : localhost:8080/api/customer/add
 	 * Method : Post
 	 * Input : Customer customer = new Customer
-	 * 
+	 *  
 	 * */
 	
 	@PostMapping("api/customer/add")

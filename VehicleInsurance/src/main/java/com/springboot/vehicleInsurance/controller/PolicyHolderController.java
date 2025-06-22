@@ -75,7 +75,11 @@ public class PolicyHolderController {
     public List<PolicyHolder> getAll() {
         return holderService.getAll();
     }
-
+    
+    @GetMapping("/getAll") 
+    public List<PolicyHolderRequest> getAllWithAddons(){
+    	return holderService.getAllWithAddons();
+    }
     /*
      * Aim : Get policy holders by customer ID
      * Path : api/policy/get/{customerId}

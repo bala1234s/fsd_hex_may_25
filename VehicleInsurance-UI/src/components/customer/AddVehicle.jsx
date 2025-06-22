@@ -43,7 +43,7 @@ function AddVehicle({ visible, setVisible, customerId }) {
     
     return (
         <div className="card flex justify-content-center">
-            {/* <Button label="Show" icon="pi pi-external-link" onClick={() => setVisible(true)} /> */}
+            <Button label="Show" icon="pi pi-external-link" onClick={() => setVisible(true)} />
             <Dialog header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                 <form action="" onSubmit={handleAddVehicle}>
                     <div className="mb-3">

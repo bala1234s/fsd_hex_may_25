@@ -1,0 +1,27 @@
+/* Header Styling */
+.proposal-header .p-datatable-thead>tr>th {
+    background-color: rgb(24, 66, 158) !important;
+    /* Light Blue Header */
+    color: #ffffff !important;
+    /* Black Text */
+    text-align: center;
+    
+}
+.proposal-header .p-datatable-header{
+    background-color: white;
+    
+}
+
+
+.proposal-header .p-datatable-header div input{
+    width: 60rem;
+}
+/* Body Styling */
+.proposal-header .p-datatable-tbody>tr>td {
+    background-color: #ffffff !important;
+    /* White Row */
+    color: #000000 !important;
+    /* Black Text */
+    text-align: left;
+    border-bottom: 1px solid rgb(189, 189, 189);
+}
