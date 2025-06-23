@@ -64,7 +64,7 @@ public class SecurityConfig {
 						.requestMatchers("api/quote/get-one/{policyHolderId}").hasAnyAuthority("CUSTOMER", "OFFICER")
 						.requestMatchers("api/quote/get-addons").hasAnyAuthority("CUSTOMER", "OFFICER")
 
-						.requestMatchers("api/payment/pay").hasAuthority("CUSTOMER")
+						.requestMatchers("api/payment/pay/{policyHolderId}").hasAuthority("CUSTOMER")
 
 						.requestMatchers("api/claim/request/{policyHolderId}").hasAuthority("CUSTOMER")
 						.requestMatchers("api/claim/get-one").hasAuthority("CUSTOMER")

@@ -1,6 +1,7 @@
 package com.springboot.vehicleInsurance.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import com.springboot.vehicleInsurance.service.PaymentService;
 
 @RestController
 @RequestMapping("api/payment")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PaymentController {
 
 	@Autowired
@@ -28,8 +30,8 @@ public class PaymentController {
 	 * 
 	 * */
 	
-	@PostMapping("/pay")
-	public Payment pay(@RequestParam int policyHolderId, @RequestBody Payment payment) {
+	@PostMapping("/pay/{policyHolderId}")
+	public Payment pay(@PathVariable int policyHolderId, @RequestBody Payment payment) {
 		
 		return paymentService.pay(policyHolderId, payment);
 	}

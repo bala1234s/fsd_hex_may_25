@@ -34,6 +34,7 @@ public class PaymentService {
 		}
 		payment.setStatus("PAID");
 		payment.setPaidDate(LocalDate.now());
+		System.out.println(payment.getPaid());
 		if(payment.getPaid() != quote.getTotal()) {
 			throw new InsufficientPaymentException("Please Enter Proper Amount !!!");
 		}

@@ -43,7 +43,7 @@ public class QuoteService {
 		
 		
 
-		holder.setStatus("QUOTE GENARATED"); 
+		holder.setStatus("QUOTE GENERATED"); 
 
 		quote.setPolicyHolder(holder);
 		quote.setSendDate(LocalDate.now());

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function AllPolicy() {
     const dispatch = useDispatch();
-    let [allPolicy, ] = useState(useSelector(state => state.allPolicy.allPolicy));
+    let [allPolicy,] = useState(useSelector(state => state.allPolicy.allPolicy));
     console.log(allPolicy);
     
     
@@ -37,7 +37,7 @@ function AllPolicy() {
                                 <div className="card" >
                                     <div className="card-body">
                                         <h5 className="card-title">Policy: {p.policyName}</h5>
-                                        <p className="card-text">Policy Type: {p.policyType}</p>
+                                        <p className="card-text">Policy Type: {p.policyType} </p>
                                         <p className="card-text">Description: {p.description}</p>
                                         <p className="card-text">Price: {p.price}</p>
                                         <Link to={`/policyDetails/${p.id}`} className="btn btn-primary">Get Quote</Link>
@@ -52,6 +52,8 @@ function AllPolicy() {
                 </div>
 
             </div>
+
+           
         </div>
     )
 }

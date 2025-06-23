@@ -53,7 +53,7 @@ function Proposal() {
         switch (status) {
             case 'CLAIMED': return 'success';
             case 'PENDING': return 'warning';
-            case 'QUOTE GENARATED': return 'info';
+            case 'QUOTE GENERATED': return 'info';
             default: return null;
         }
     };
@@ -88,7 +88,7 @@ function Proposal() {
     );
 
     const statusRowFilterTemplate = (options) => {
-        const statuses = ['CLAIMED', 'PENDING', 'QUOTE GENARATED'];
+        const statuses = ['CLAIMED', 'PENDING', 'QUOTE GENERATED'];
         return (
             <Dropdown
                 value={options.value}
@@ -195,7 +195,7 @@ function Proposal() {
                 className='proposal-header'
                 style={{ padding: '1rem' }}
             >
-                <Column header="Customer Details" body={customerBodyTemplate} style={{ width: '12rem' }} />
+                <Column header="Customer Details" body={customerBodyTemplate} style={{ width: '12rem' } } />
                 <Column header="Vehicle Details" body={vehicleBodyTemplate} style={{ width: '12rem' }} />
                 <Column header="Policy" body={policyBodyTemplate} style={{ width: '12rem' }} />
                 <Column header="Add-Ons" body={addOnsBodyTemplate} style={{ width: '21rem' }} />
@@ -204,7 +204,7 @@ function Proposal() {
                     header="Status"
                     body={statusBodyTemplate}
                     showFilterMenu={false}
-                    filter
+                    filter  
                     filterElement={statusRowFilterTemplate}
                 />
                 <Column header="Start & End Date" body={dateBodyTemplate} style={{ width: '15rem' }} />
