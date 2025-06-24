@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import UserDetails from "./assets/components/UserDetails"
-import User from "./assets/components/UserDetails"
-import AddUser from "./assets/components/AddUser"
-import EditUser from "./assets/components/EditUser"
+import UserDetails from "./components/UserDetails"
+import User from "./components/UserDetails"
+import AddUser from "./components/AddUser"
+import EditUser from "./components/EditUser"
 
 function App() {
   return (
