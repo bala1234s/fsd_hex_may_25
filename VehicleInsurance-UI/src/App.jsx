@@ -13,6 +13,7 @@ import ApplyPolicy from "./components/customer/ApplyPolicy"
 import OfficerDashboard from "./components/officer/OfficerDashboard"
 import OfficerHome from "./components/officer/OfficerHome"
 import Proposal from "./components/officer/Proposal"
+import ApprovePolicy from "./components/officer/ApprovePolicy"
 
 
 
@@ -37,7 +38,8 @@ function App() {
         {/* Officer Router */}
         <Route path="/officer" element={<OfficerDashboard />}>
           <Route path="officerHome" element={<OfficerHome />}></Route>
-          <Route path="proposal" element={ <Proposal />}></Route>
+          <Route path="proposal" element={<Proposal />}></Route>
+          <Route path="approve" element={<ApprovePolicy />}></Route>
         
         </Route>
       </Routes>

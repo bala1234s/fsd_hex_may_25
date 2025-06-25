@@ -1,5 +1,6 @@
 package com.springboot.vehicleInsurance.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.vehicleInsurance.model.Customer;
 import com.springboot.vehicleInsurance.service.CustomerService;
@@ -32,13 +35,51 @@ public class CustomerController {
 	 *  
 	 * */
 	
-	@PostMapping("api/customer/add")
-	public ResponseEntity<Customer> add(@RequestBody Customer customer) {
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.insertCustomer(customer));
-		
-	}
+//	@PostMapping("api/customer/add")
+//	public ResponseEntity<Customer> add(Principal principal, @RequestBody Customer customer) {
+//		String username = principal.getName();
+//		
+//		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.insertCustomer(username, customer));
+//		
+//	}
 	
+	/*
+	 * Aim : Upload Profile pic
+	 * Path : localhost:8080/api/customer/upload/profile-pic
+	 * Method : Post
+	 * Input : File 
+	 * */
+	
+	@PostMapping("api/customer/upload/profile-pic")
+	public Customer uploadProfilePic(Principal principal, @RequestParam("file") MultipartFile file) throws IOException {
+	    return customerService.uploadProfilePic(file, principal.getName());
+	}
+
+	
+	
+	@PostMapping("api/customer/add")
+	public ResponseEntity<Customer> addCustomerWithImage(
+	        @RequestParam("name") String name,
+	        @RequestParam("dob") String dob,
+	        @RequestParam("contact") String contact,
+	        @RequestParam("aadharNumber") String aadharNumber,
+	        @RequestParam("panNumber") String panNumber,
+	        @RequestParam("address") String address,
+	        @RequestParam("username") String username,
+	        @RequestParam("password") String password,
+	        @RequestParam("file") MultipartFile file) throws IOException {
+
+	    return ResponseEntity.status(HttpStatus.CREATED)
+	            .body(customerService.insertCustomerWithImage(name,
+	            											  dob,
+	            											  contact,
+	            											  aadharNumber,
+	            											  panNumber,
+	            											  address,
+	            											  username,
+	            											  password,
+	            											  file));
+	}
 	
 	
 	/*
@@ -98,6 +139,7 @@ public class CustomerController {
 		
 		
 	}
+	
 	
 	
 

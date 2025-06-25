@@ -23,8 +23,9 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf((csrf) -> csrf.disable())
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Prefight - Allows the permit all  
 						.requestMatchers("api/customer/add").permitAll()
+						.requestMatchers("api/customer/upload/profile-pic").permitAll()
 						.requestMatchers("api/user/signup").permitAll()
 						.requestMatchers("api/officer/add").permitAll()
 						.requestMatchers("api/policy/get-all").permitAll()
@@ -65,7 +66,7 @@ public class SecurityConfig {
 						.requestMatchers("api/quote/get-addons").hasAnyAuthority("CUSTOMER", "OFFICER")
 
 						.requestMatchers("api/payment/pay/{policyHolderId}").hasAuthority("CUSTOMER")
-
+						.requestMatchers("api/payment/get-all").hasAuthority("OFFICER")
 						.requestMatchers("api/claim/request/{policyHolderId}").hasAuthority("CUSTOMER")
 						.requestMatchers("api/claim/get-one").hasAuthority("CUSTOMER")
 						.requestMatchers("api/claim/get-all").hasAuthority("OFFICER")

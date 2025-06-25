@@ -1,0 +1,18 @@
+.approve-header .p-datatable-thead>tr>th {
+    background-color: rgb(24, 66, 158);
+    /* light blue */
+    color: #ffffff;
+    text-align: center;
+}
+
+.approve-header .p-datatable-thead>tr>td {
+    color: #000000;
+}
+
+.approve-header .p-datatable-tbody>tr>td {
+    background-color: #ffffff !important;
+    /* white */
+    color: #000000 !important;
+    /* black */
+    text-align: left;
+}

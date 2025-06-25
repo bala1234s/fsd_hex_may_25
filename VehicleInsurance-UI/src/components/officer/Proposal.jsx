@@ -14,15 +14,15 @@ import { Button } from 'primereact/button';
 
 function Proposal() {
     const [proposals, setProposals] = useState([]);
-    const [filters, setFilters] = useState({
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        status: { value: null, matchMode: FilterMatchMode.EQUALS }
-    });
     const [visible, setVisible] = useState(false);
     const [selectedProposal, setSelectedProposal] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [totalPremium, setTotalPremium] = useState(0);
-
+    
+    const [filters, setFilters] = useState({
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        status: { value: null, matchMode: FilterMatchMode.EQUALS }
+    });
     useEffect(() => {
         axios.get('http://localhost:8080/api/policy-holder/getAll', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }

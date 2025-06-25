@@ -101,6 +101,11 @@ function Profile() {
                         </div>
 
                         <div className="card-body">
+                            <strong>Profile Pic</strong>
+                            <img src={`../ProfilePic/${profile.profilePic}`} alt="Profile" class="img-thumbnail" style={{
+                                height:'200px', width:'200px',borderRadius:'50%'
+                            }}/>
+
                             <p className="form-control"><strong>Name </strong>{profile.name}</p>
                             <p className="form-control"><strong>Contact </strong>{profile.contact}</p>
                             <p className="form-control"><strong>Address </strong>{profile.address}</p>

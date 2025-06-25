@@ -1,5 +1,7 @@
 package com.springboot.vehicleInsurance.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,5 +50,19 @@ public class PaymentController {
 	@GetMapping("/get-one")
 	public Payment getPaymentByHolderId(@RequestParam int policyHolderId) {
 		return paymentService.getPaymentByHolderId(policyHolderId);
+	}
+	
+	/*
+	 * Aim : Get All Payment 
+	 * Path : api/payment/get-all
+	 * Method : Get
+	 * Response :List< Payment>
+	 * 
+	 * */
+	
+	
+	@GetMapping("get-all")
+	public List<Payment> getAllPayment() {
+		return paymentService.getAllPayment();
 	}
 }

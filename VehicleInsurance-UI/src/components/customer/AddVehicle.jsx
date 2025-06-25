@@ -7,8 +7,6 @@ import axios from "axios";
 function AddVehicle({ visible, setVisible, customerId }) {
     // const [visible, setVisible] = useState(false);
 
-
-    
     console.log("Add vehcile Component");
     console.log("Customer ID:", customerId);
 

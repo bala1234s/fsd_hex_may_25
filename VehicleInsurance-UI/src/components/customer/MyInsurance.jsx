@@ -17,22 +17,21 @@ function MyInsurance() {
 
     const toast = useRef(null);
 
-    
+    // fetch all insurance by customer username
+    const getMyInsurance = () => {
+        axios.get("http://localhost:8080/api/policy-holder/get", {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        })
+            .then((resp) => {
+                console.log(resp.data);
+                setMyInsurance(resp.data);
+            }).catch((err) => {
+                console.log(err);
+            });
+    };
 
     useEffect(() => {
-        const getMyInsurance = () => {
-            axios.get("http://localhost:8080/api/policy-holder/get", {
-                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-            })
-                .then((resp) => {
-                    console.log(resp.data);
-                    setMyInsurance(resp.data);
-                }).catch((err) => {
-                    console.log(err);
-                });
-        };
         if (visible === true) { 
-            
             qoute(selectedQuote);
         }
         getMyInsurance();
@@ -83,6 +82,7 @@ function MyInsurance() {
         }).then((resp) => { 
             console.log(resp);
             setQuoteDetails(resp.data);
+           
         }).catch((err) => { 
             console.log(err);
             
@@ -102,6 +102,7 @@ function MyInsurance() {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
             }).then((resp) => {
                 toast.current.show({ severity: 'success', summary: 'Payment Success', detail: 'Payment Completed Successfully', life: 3000 });
+                getMyInsurance();
                 setVisible(false);
             }).catch((err) => {
                 toast.current.show({ severity: 'error', summary: 'Payment Failed', detail: 'Something went wrong', life: 3000 });
@@ -123,10 +124,10 @@ function MyInsurance() {
     
 
     return (
-        <div className="container mt-4">
+        <div className=" mt-4 ml-5" style={{width:'90rem'}}>
             <h2 className="text-center mb-4 text-primary">My Insurance Policies</h2>
             <DataTable value={myInsurance} paginator rows={5} scrollable scrollHeight="400px"
-                tableStyle={{ minWidth: '120rem', tableLayout: 'auto', padding: '1rem' }} className="custom-header">
+                tableStyle={{ width:'120rem',tableLayout: 'auto', padding: '1rem' }} className="custom-header">
 
                 <Column header="Policy Name" body={policyNameBodyTemplate} style={{ width: '10%' }} />
                 <Column field="status" header="Status" style={{ width: '8%' }} />
