@@ -54,6 +54,7 @@ public class SecurityConfig {
 
 						.requestMatchers("api/policy-holder/get-all").hasAuthority("OFFICER")
 						.requestMatchers("api/policy-holder/getAll").hasAuthority("OFFICER")
+						.requestMatchers("api/policy-holder/get-one-details/{policyHolderId}").hasAuthority("OFFICER")
 						.requestMatchers("api/policy-holder/approve").hasAuthority("OFFICER")
 
 						.requestMatchers("api/add-on/get-all").hasAuthority("OFFICER")

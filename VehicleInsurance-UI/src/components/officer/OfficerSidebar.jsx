@@ -22,8 +22,8 @@ const SideBar = () => {
                     <Link to="/officer/officerHome"> <li><FaHome style={{ marginRight: "8px" }} /> Dashboard</li></Link>
                     <Link to={"/officer/proposal"}> <li><IoDocumentAttach style={{ marginRight: "8px" }} />Proposal</li></Link>
                     <Link to={"/officer/approve"}> <li><IoDocumentAttach style={{ marginRight: "8px" }} /> Approval</li></Link>
+                    <Link to={"/officer/policy-details"}><li><FaCarSide style={{ marginRight: "8px" }} /> Policy Details</li></Link>
                     <Link to={"/customer/profile"}><li><FaUser style={{ marginRight: "8px" }} /> Profile</li></Link>
-                    <Link to={"/customer/vehicle"}><li><FaCarSide style={{ marginRight: "8px" }} /> My Vehicle</li></Link>
                     <Link> <li><FaCog style={{ marginRight: "8px" }} /> Settings</li></Link>
                     <Logout />
                 </ul>

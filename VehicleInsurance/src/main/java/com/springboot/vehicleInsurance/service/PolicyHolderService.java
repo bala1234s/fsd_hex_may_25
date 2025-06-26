@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.vehicleInsurance.dto.PolicyHolderRequest;
 import com.springboot.vehicleInsurance.exception.PaymentNotFoundException;
+import com.springboot.vehicleInsurance.exception.PolicyHolderNotFoundException;
 import com.springboot.vehicleInsurance.exception.ResourceNotFoundException;
 import com.springboot.vehicleInsurance.model.AddOns;
 import com.springboot.vehicleInsurance.model.Customer;
@@ -33,15 +34,18 @@ public class PolicyHolderService {
 	private AddOnService addOnService;
 	private AddOnRepository addOnRepository;
 	private PaymentService paymentService;
+	private PolicyHolderRequest holderRequest;
 	
 	/* Logger Inject*/
 	Logger logger = LoggerFactory.getLogger("PolicyHolderService");
 	
 
 	
+
 	public PolicyHolderService(PolicyHolderRepository holderRepository, CustomerRepository customerRepository,
 			VehicleRepository vehicleRepository, PolicyRepository policyRepository, VehicleService vehicleService,
-			AddOnService addOnService, AddOnRepository addOnRepository, PaymentService paymentService) {
+			AddOnService addOnService, AddOnRepository addOnRepository, PaymentService paymentService,
+			PolicyHolderRequest holderRequest) {
 		super();
 		this.holderRepository = holderRepository;
 		this.customerRepository = customerRepository;
@@ -51,6 +55,7 @@ public class PolicyHolderService {
 		this.addOnService = addOnService;
 		this.addOnRepository = addOnRepository;
 		this.paymentService = paymentService;
+		this.holderRequest = holderRequest;
 	}
 
 
@@ -75,6 +80,9 @@ public class PolicyHolderService {
 	            .orElseThrow(() -> new RuntimeException("Invalid Policy ID"));
 
 	    logger.info("fetch policy by policy id");
+	    
+	    
+	    policy.setPrice(policy.getPrice() * holder.getPlanYear());
 	    vehicle.setCustomer(customer);
 	    holder.setVehicle(vehicle);
 	    holder.setPolicy(policy);
@@ -217,6 +225,27 @@ public class PolicyHolderService {
 	    }
 	    
 	    return list;
+	}
+
+
+
+
+
+	public PolicyHolderRequest getHolderWithAddons(int policyHolderId) {
+	
+		// Get Policy Holder by id
+		PolicyHolder holder = holderRepository.findById(policyHolderId)
+				.orElseThrow(()-> new PolicyHolderNotFoundException("Policy Holder Not Found"));
+
+		// Get Addons by PolicyHolderID
+		List<AddOns> addOns = addOnService.getByPolicyHolderId(policyHolderId);
+		if(addOns.isEmpty() || addOns== null) {
+			
+			holderRequest.setAddOns(null);
+		}
+		holderRequest.setHolder(holder);
+		holderRequest.setAddOns(addOns);
+		return holderRequest;
 	}
 
 

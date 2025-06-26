@@ -74,6 +74,7 @@ function MyInsurance() {
         }
     };
     
+    // Get Quote by policy holder id
     const qoute = (selected) => { 
         console.log(selected);
         
@@ -102,8 +103,8 @@ function MyInsurance() {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
             }).then((resp) => {
                 toast.current.show({ severity: 'success', summary: 'Payment Success', detail: 'Payment Completed Successfully', life: 3000 });
-                getMyInsurance();
-                setVisible(false);
+                getMyInsurance(); //<--After payment success call the insurance details method to view updated data 
+                setVisible(false); //<-- closing the payment dialog popup
             }).catch((err) => {
                 toast.current.show({ severity: 'error', summary: 'Payment Failed', detail: 'Something went wrong', life: 3000 });
             });
@@ -112,6 +113,7 @@ function MyInsurance() {
         }
     };
 
+    // confirm dialog for get confirm for payment 
     const confirmPayment = () => {
         confirmDialog({
             message: 'Are you sure you want to proceed with payment?',

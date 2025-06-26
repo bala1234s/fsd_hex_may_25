@@ -14,10 +14,6 @@ const CustomerDashboard = () => {
     let navigate = useNavigate();
     let name = localStorage.getItem('name');
     
-    
-
-  
-    
     useEffect(() => {
         const token = localStorage.getItem('token');
 
@@ -50,10 +46,7 @@ const CustomerDashboard = () => {
             <div className="dashboard-container pt-5">
 
                 <div className="m-5 p-5" style={{ position:"fixed",zIndex:1000}}>
-                    <SideBar  />
-                    
-                    
-                    
+                    <SideBar  />  
                 </div>
 
 

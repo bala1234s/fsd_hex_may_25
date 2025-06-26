@@ -10,6 +10,7 @@ import "../css/ApprovePolicy.css"
 import { Toast } from 'primereact/toast';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
+
 function ApprovePolicy() {
 
     // store Token
@@ -24,6 +25,8 @@ function ApprovePolicy() {
         axios.get('http://localhost:8080/api/payment/get-all', {
             headers: { 'Authorization': 'Bearer ' + token }
         }).then((resp) => {
+            console.log(resp.data);
+            
             const flat = resp.data.map(flattenPayment);
             setPayments(flat);
         }).catch((err) => {
@@ -200,15 +203,11 @@ function ApprovePolicy() {
                 <Column header="Action" body={viewDetailsButton} />
             </DataTable>
 
-            <Dialog
-                header="Payment Details"
-                visible={visible}
-                style={{ width: '50vw' }}
-                onHide={() => setVisible(false)}
-            >
+            <Dialog header="Policy Details" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+
                 {selectedPayment && (
                     <div style={{ padding: '1rem', color: 'black' }}>
-                        <h4>Customer: {selectedPayment.customerName} <Tag severity="success" value="Paid"></Tag></h4>
+                        <h4>Customer: {selectedPayment.customerName} <Tag severity="success" value="Paid" /></h4>
                         <p><strong>Contact:</strong> {selectedPayment.customerContact}</p>
                         <p><strong>Vehicle:</strong> {selectedPayment.vehicleType} - {selectedPayment.vehicleModel}</p>
                         <p><strong>Policy:</strong> {selectedPayment.policyName} (₹{selectedPayment.policyPrice})</p>
@@ -218,27 +217,27 @@ function ApprovePolicy() {
                         <p><strong>Premium:</strong> ₹{selectedPayment.premium}</p>
                         <p><strong>Add-On Charges:</strong> ₹{selectedPayment.addOnPrice}</p>
                         <p><strong>Total Paid:</strong> ₹{selectedPayment.total}</p>
-                        <p><strong>Paid On:</strong> {selectedPayment.paidDate} </p>
-                        {
-                            selectedPayment.active === true ?
-                                <p>
-                                    <button className='btn btn-danger'
-                                        onClick={() => deActivatePolicy(selectedPayment.policyHolderId)}>
-                                        Deactivate Policy
-                                    </button>
-                                </p>
-                                :
-                                <p>
-                                    <button className='btn btn-primary'
-                                        onClick={() => activatePolicy(selectedPayment.policyHolderId)}>
-                                        Activate Policy
-                                    </button>
-                                </p>
-                        }
-                       
+                        <p><strong>Paid On:</strong> {selectedPayment.paidDate}</p>
+
+                        {selectedPayment.active === true ? (
+                            <p>
+                                <button className='btn btn-danger' onClick={() => activatePolicy(selectedPayment.policyHolderId)}>
+                                    Deactivate Policy
+                                </button>
+                            </p>
+                        ) : (
+                            <p>
+                                <button className='btn btn-primary' onClick={() => activatePolicy(selectedPayment.policyHolderId)}>
+                                    Activate Policy
+                                </button>
+                            </p>
+                        )}
                     </div>
                 )}
+
             </Dialog>
+
+
         </div>
     );
 }

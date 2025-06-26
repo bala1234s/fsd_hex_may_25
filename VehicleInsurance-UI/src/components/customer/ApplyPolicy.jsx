@@ -16,8 +16,11 @@ function ApplyPolicy() {
     const [addOnsList, setAddOnsList] = useState([]);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [selectedAddOns, setSelectedAddOns] = useState([]);
+    const [selectedPlan, setSelectedPlan] = useState(null);
+
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+
 
     useEffect(() => {
         // Fetch policy
@@ -61,6 +64,7 @@ function ApplyPolicy() {
 
         const postData = {
             holder: {
+                planYear:selectedPlan,
                 startDate: startDate,
                 endDate: endDate
             },
@@ -78,6 +82,20 @@ function ApplyPolicy() {
             })
             .catch(err => console.log(err));
     };
+
+    // Plan years to date
+    const handlePlanChange = (e) => {
+        const years = parseInt(e.target.value);
+        setSelectedPlan(years);
+
+        const start = new Date();
+        const end = new Date();
+        end.setFullYear(end.getFullYear() + years);
+
+        setStartDate(start.toISOString().split("T")[0]);
+        setEndDate(end.toISOString().split("T")[0]);
+    };
+    
 
     return (
         <div className="container">
@@ -130,25 +148,29 @@ function ApplyPolicy() {
                         </StepperPanel>
 
                         <StepperPanel header="Set Policy Period">
-                            <div className="p-field">
-                                <label>Start Date: </label>
-                                <input
-                                    type="date"
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                />
+                            <div className="p-field mb-3">
+                                <label>Policy Plan:</label>
+                                <select className="form-control" onChange={handlePlanChange} value={selectedPlan || ""}>
+                                    <option value="">Select Plan Duration</option>
+                                    <option value="1">1 Year</option>
+                                    <option value="2">2 Years</option>
+                                    <option value="3">3 Years</option>
+                                </select>
                             </div>
-                            <div className="p-field">
-                                <label>End Date: </label>
-                                <input
-                                    type="date"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                />
+
+                            <div className="p-field mb-3">
+                                <label>Start Date:</label>
+                                <input type="date" className="form-control" value={startDate} readOnly />
                             </div>
+
+                            <div className="p-field mb-3">
+                                <label>End Date:</label>
+                                <input type="date" className="form-control" value={endDate} readOnly />
+                            </div>
+
                             <div className="flex pt-4 justify-content-between">
                                 <Button label="Back" onClick={() => stepperRef.current.prevCallback()} />
-                                <Button label="Submit" onClick={submitPolicy} />
+                                <Button label="Submit" onClick={()=>submitPolicy()} />
                             </div>
                         </StepperPanel>
                     </Stepper>

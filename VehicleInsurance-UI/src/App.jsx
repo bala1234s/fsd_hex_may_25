@@ -14,6 +14,7 @@ import OfficerDashboard from "./components/officer/OfficerDashboard"
 import OfficerHome from "./components/officer/OfficerHome"
 import Proposal from "./components/officer/Proposal"
 import ApprovePolicy from "./components/officer/ApprovePolicy"
+import AllPolicyDetails from "./components/officer/AllPolicyDetails"
 
 
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="officerHome" element={<OfficerHome />}></Route>
           <Route path="proposal" element={<Proposal />}></Route>
           <Route path="approve" element={<ApprovePolicy />}></Route>
+          <Route path="policy-details" element={<AllPolicyDetails />}></Route>
         
         </Route>
       </Routes>

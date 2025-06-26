@@ -2,9 +2,12 @@ package com.springboot.vehicleInsurance.dto;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.springboot.vehicleInsurance.model.AddOns;
 import com.springboot.vehicleInsurance.model.PolicyHolder;
 
+@Component
 public class PolicyHolderRequest {
     private PolicyHolder holder;
     private List<AddOns> addOns;

@@ -3,42 +3,41 @@ import { useState } from "react";
 
 function CustomerRegister() {
 
-    let [profilePic, setProfilePic] = useState("");
+   
 
     const handleRegister = async (event) => {
         event.preventDefault(); // prevent page reload
 
         const form = event.target;
-        const formData = new FormData();
-        formData.append('file', profilePic);
-        // const customerForm = {
-        //     'name': form.name.value,
-        //     'contact': form.contact.value,
-        //     'aadharNumber': form.aadhar.value,
-        //     'address': form.address.value,
-        //     'panNumber': form.panNumber.value,
-        //     'dob': form.dob.value,
-        //     'user': {
-        //         'username': form.username.value,
-        //         'password': form.password.value
-        //     }
-        // };
+        
+        const customerForm = {
+            'name': form.name.value,
+            'contact': form.contact.value,
+            'aadharNumber': form.aadhar.value,
+            'address': form.address.value,
+            'panNumber': form.panNumber.value,
+            'dob': form.dob.value,
+            'user': {
+                'username': form.username.value,
+                'password': form.password.value
+            }
+        };
 
-        // console.log("Form Data:", customerForm);
+        console.log("Form Data:", customerForm);
 
-        formData.append("name", form.name.value);
-        formData.append("contact", form.contact.value);
-        formData.append("aadharNumber", form.aadhar.value);
-        formData.append("address", form.address.value);
-        formData.append("panNumber", form.panNumber.value);
-        formData.append("dob", form.dob.value);
-        formData.append("username", form.username.value);
-        formData.append("password", form.password.value);
-        formData.append("file", profilePic);
+        // formData.append("name", form.name.value);
+        // formData.append("contact", form.contact.value);
+        // formData.append("aadharNumber", form.aadhar.value);
+        // formData.append("address", form.address.value);
+        // formData.append("panNumber", form.panNumber.value);
+        // formData.append("dob", form.dob.value);
+        // formData.append("username", form.username.value);
+        // formData.append("password", form.password.value);
+        // formData.append("file", profilePic); // <-- Upload profile pic
 
         try {
-            const resp = await axios.post("http://localhost:8080/api/customer/add", formData);
-           
+            const resp = await axios.post("http://localhost:8080/api/customer/add", customerForm);
+            
             console.log("Response:", resp.data);
             alert("Customer registered successfully!");
         } catch (error) {
@@ -94,10 +93,7 @@ function CustomerRegister() {
                                         <label className="form-label">Password</label>
                                         <input type="password" name="password" className="form-control" required />
                                     </div>
-                                    <div className="col-md-6">
-                                        <label className="form-label">Upload Profile</label>
-                                        <input type="file" onChange={($e) => setProfilePic($e.target.files[0])} required />
-                                    </div>
+                                    
                                     <div className="col-12">
                                         <button type="submit" className="btn btn-primary">Sign in</button>
                                     </div>

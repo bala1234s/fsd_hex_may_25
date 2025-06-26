@@ -7,6 +7,10 @@ import { Dialog } from 'primereact/dialog';
 function Profile() {
     let [profile, setProfile] = useState({});
     let [visible, setVisible] = useState(false);
+    let [profilePic, setProfilePic] = useState("");
+
+    // Token 
+    let token = localStorage.getItem('token');
 
     useEffect(() => {
         const getCustomerProfile = () => {
@@ -15,17 +19,35 @@ function Profile() {
             })
                 .then((resp) => {
                     console.log(resp.data);
-
+    
                     setProfile(resp.data);
                 }).catch((err) => {
                     console.log(err);
-
+    
                 })
         }
 
         getCustomerProfile();
     }, [])
 
+    const uploadImage = () => { 
+        const formData = new FormData();
+        formData.append('file', profilePic);
+        //upload profile pic
+        axios.post("http://localhost:8080/api/customer/upload/profile-pic", formData, {
+            headers: {'Authorization':'Bearer '+token}
+        }).then((resp) => { 
+            console.log(resp.data.profilePic);
+            setProfilePic(resp.data.profilePic); 
+            setProfile(resp.data);
+            alert('Uploaded Success');
+
+        }).catch((err) => { 
+            console.log(err);
+            
+        })
+
+    }
     const editProfile = (event) => {
         event.preventDefault();
         let formProfile = event.target;
@@ -40,13 +62,15 @@ function Profile() {
             'addharNumber': formProfile.aadharNumber.value
         }
         console.log(updatedProfile);
-
+        uploadImage();
         // Update profile using axios
         axios.put(`http://localhost:8080/api/customer/update/${profile.id}`, updatedProfile, {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         }).then((resp) => {
             console.log("Updated :" + resp.data);
             setVisible(false);
+            setProfile(resp.data);
+            setProfilePic(resp.data.profilePic);
         }).catch((err) => {
             console.log(err);
 
@@ -92,6 +116,10 @@ function Profile() {
                                     <div className="mb-3">
                                         <label className="form-label">Aadhar Number</label>
                                         <input type="text" className="form-control" id="aadharNumber" defaultValue={profile.aadharNumber} />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label">Upload Profile</label>
+                                        <input type="file" onChange={($e) => setProfilePic($e.target.files[0])} required />
                                     </div>
                                     <div>
                                         <button className="btn btn-primary" type="submit" >Save Changes</button>

@@ -24,6 +24,8 @@ public class PolicyHolder {
 	@Column(name = "end_date")
 	private LocalDate endDate;
 	
+	private int planYear;
+	
 	private boolean isActive;
 	
 	
@@ -49,6 +51,13 @@ public class PolicyHolder {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public int getPlanYear() {
+		return planYear;
+	}
+	public void setPlanYear(int planYear) {
+		this.planYear = planYear;
 	}
 	public LocalDate getStartDate() {
 		return startDate;

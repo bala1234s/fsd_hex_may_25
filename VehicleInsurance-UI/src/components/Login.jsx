@@ -26,6 +26,10 @@ function Login() {
     }
     const login = async () => {
         try {
+            if (!username || !password) { 
+                alert("Please fill all fields")
+                return;
+            }
             // Encode the username and password in base64 format
             let encodeString = window.btoa(username + ":" + password);
 
@@ -87,7 +91,7 @@ function Login() {
                     {/* Card Start */}
                     <div className="card">
                         <div className="card-header " style={{
-                            backgroundColor: "lightgreen",
+                            backgroundColor: "rgb(24, 66, 158)",
                             color: "white",
                             fontSize: "20px"
 
@@ -97,14 +101,14 @@ function Login() {
 
                             <div className="mb-3">
                                 <label className="form-label">Username</label>
-                                <input type="text" className="form-control" placeholder="Enter username" onChange={($e) => setUsername($e.target.value)} />
+                                <input type="text" className="form-control" placeholder="Enter username" onChange={($e) => setUsername($e.target.value)} required/>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">password</label>
-                                <input type="text" className="form-control" placeholder="Enter password" onChange={($e) => setPassword($e.target.value)} />
+                                <input type="text" className="form-control" placeholder="Enter password" onChange={($e) => setPassword($e.target.value)} required/>
                             </div>
                             <div className="mt-3">
-                                <button className="btn btn-primary" onClick={() => login()}>Login</button>
+                                <button className="btn btn-primary" style={{ backgroundColor: "rgb(24, 66, 158)" }} onClick={() => login()}>Login</button>
 
                             </div>
 

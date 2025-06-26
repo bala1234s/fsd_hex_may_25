@@ -11,6 +11,7 @@ import axios from 'axios';
 import "../css/Proposal.css";
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import ShowPolicyDetails from './ShowPolicyDetails';
 
 function Proposal() {
     const [proposals, setProposals] = useState([]);
@@ -18,7 +19,7 @@ function Proposal() {
     const [selectedProposal, setSelectedProposal] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [totalPremium, setTotalPremium] = useState(0);
-    
+
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         status: { value: null, matchMode: FilterMatchMode.EQUALS }
@@ -27,6 +28,8 @@ function Proposal() {
         axios.get('http://localhost:8080/api/policy-holder/getAll', {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         }).then((resp) => {
+            console.log(resp.data);
+
             const flattened = resp.data.map(flattenProposal);
             setProposals(flattened);
         }).catch((err) => console.log(err));
@@ -40,6 +43,7 @@ function Proposal() {
             vehicleType: proposal.holder.vehicle.vehicleType,
             vehicleModel: proposal.holder.vehicle.vehicleModel,
             policyName: proposal.holder.policy.policyName,
+
             policyPrice: proposal.holder.policy.price,
             status: proposal.holder.status,
             startDate: proposal.holder.startDate,
@@ -155,7 +159,7 @@ function Proposal() {
     };
 
     // send quotes
-    const sendQuote = (selectedPolicy) => { 
+    const sendQuote = (selectedPolicy) => {
         console.log(selectedPolicy);
         let addons = (selectedProposal.addOns && selectedProposal.addOns.length > 0
             ? selectedProposal.addOns.reduce((sum, addon) => sum + addon.price, 0)
@@ -163,18 +167,18 @@ function Proposal() {
         let quoteObj = {
             'premium': selectedPolicy.policyPrice,
             'addOnPrice': addons,
-            'total': selectedPolicy.policyPrice+addons
+            'total': selectedPolicy.policyPrice + addons
         }
         console.log(quoteObj);
-        
+
         axios.post(`http://localhost:8080/api/quote/send/${selectedPolicy.id}`, quoteObj, {
-            headers: { 'Authorization': 'Bearer ' +localStorage.getItem('token')}
-        }).then((resp) => { 
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+        }).then((resp) => {
             console.log("sended Quote");
             setVisible(false);
-        }).catch((err) => { 
+        }).catch((err) => {
             console.log(err);
-            
+
         })
     }
 
@@ -195,7 +199,7 @@ function Proposal() {
                 className='proposal-header'
                 style={{ padding: '1rem' }}
             >
-                <Column header="Customer Details" body={customerBodyTemplate} style={{ width: '12rem' } } />
+                <Column header="Customer Details" body={customerBodyTemplate} style={{ width: '12rem' }} />
                 <Column header="Vehicle Details" body={vehicleBodyTemplate} style={{ width: '12rem' }} />
                 <Column header="Policy" body={policyBodyTemplate} style={{ width: '12rem' }} />
                 <Column header="Add-Ons" body={addOnsBodyTemplate} style={{ width: '21rem' }} />
@@ -204,7 +208,7 @@ function Proposal() {
                     header="Status"
                     body={statusBodyTemplate}
                     showFilterMenu={false}
-                    filter  
+                    filter
                     filterElement={statusRowFilterTemplate}
                 />
                 <Column header="Start & End Date" body={dateBodyTemplate} style={{ width: '15rem' }} />
@@ -215,7 +219,9 @@ function Proposal() {
             <Dialog header="Quote Details" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                 {
 
-                    selectedProposal ? (
+                    selectedProposal ? selectedProposal.status === "APPROVED" ? (
+                        <div><ShowPolicyDetails policyHolderId={selectedProposal.id} /></div>
+                    ) : (
                         <div className='card' style={{
                             padding: '1rem',
                             maxWidth: '500px',
@@ -223,8 +229,8 @@ function Proposal() {
                             border: '1px solid #ccc',
                             borderRadius: '8px',
                             boxShadow: '2px 3px 5px rgba(0,0,0,0.1)',
-                            color:'black'
-                        
+                            color: 'black'
+
                         }}>
                             <div className="card-body">
                                 <h3 style={{ textAlign: 'center', marginBottom: '1rem' }}>Insurance Quote Summary</h3>
@@ -233,6 +239,7 @@ function Proposal() {
                                     <tbody >
                                         <tr >
                                             <td><strong>Customer:</strong></td>
+
                                             <td >{selectedProposal.customerName}</td>
                                         </tr>
                                         <tr>
@@ -263,7 +270,7 @@ function Proposal() {
                                                         <thead>
                                                             <tr>
                                                                 <th style={{ textAlign: 'left' }}>Name</th>
-                                                                <th style={{ textAlign: 'right'}}>Price (₹)</th>
+                                                                <th style={{ textAlign: 'right' }}>Price (₹)</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -280,7 +287,7 @@ function Proposal() {
                                         </tr>
                                         <tr>
                                             <td><strong>Total Premium:</strong></td>
-                                            <td style={{color:'green'}}><strong>₹{
+                                            <td style={{ color: 'green' }}><strong>₹{
                                                 selectedProposal.policyPrice +
                                                 (selectedProposal.addOns && selectedProposal.addOns.length > 0
                                                     ? selectedProposal.addOns.reduce((sum, addon) => sum + addon.price, 0)
@@ -291,7 +298,7 @@ function Proposal() {
                                 </table>
 
                                 <div className="card-footer" style={{ marginTop: '1rem', textAlign: 'center' }}>
-                                    <button className='btn btn-primary' onClick={()=>sendQuote(selectedProposal)}>Send Quote</button>
+                                    <button className='btn btn-primary' onClick={() => sendQuote(selectedProposal)}>Send Quote</button>
                                 </div>
                             </div>
                         </div>

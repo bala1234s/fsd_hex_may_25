@@ -103,6 +103,7 @@ public class PolicyHolderController {
     }
     
     
+    
     /*
      * Aim : Get policy holders by vehicle ID
      * Path : api/policy/get/{customerId}
@@ -137,6 +138,7 @@ public class PolicyHolderController {
         return holderService.getByCustomerIdVehicleId(customerId, vehicleId);
     }
     
+    
     /*
      * Aim : Get policy holders by customer ID and vehicle ID
      * Path : api/policy/get/{customerId}/{vehicleId}
@@ -164,7 +166,17 @@ public class PolicyHolderController {
         return holderService.getByCustomerIdVehicleIdPolicyId(customerId, vehicleId, policyId);
     }
     
+    /*
+     * Aim : Get policy holder with addons 
+     * Path : api/policy/get-one-details/{policyHolderId}
+     * Method : GET
+     * Response : PolicyHolderRequest
+     */
     
+    @GetMapping("/get-one-details/{policyHolderId}")
+    public PolicyHolderRequest getHolderWithAddons(@PathVariable int policyHolderId) {
+        return holderService.getHolderWithAddons(policyHolderId);
+    }
     /*
      * Aim : Approve the Policy by Officer (Payment should complete before approve policy)
      * Path : api/policy-holder/approve

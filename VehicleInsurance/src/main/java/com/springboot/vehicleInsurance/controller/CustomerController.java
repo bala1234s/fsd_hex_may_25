@@ -35,13 +35,13 @@ public class CustomerController {
 	 *  
 	 * */
 	
-//	@PostMapping("api/customer/add")
-//	public ResponseEntity<Customer> add(Principal principal, @RequestBody Customer customer) {
-//		String username = principal.getName();
-//		
-//		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.insertCustomer(username, customer));
-//		
-//	}
+	@PostMapping("api/customer/add")
+	public ResponseEntity<Customer> add(Principal principal, @RequestBody Customer customer) {
+		String username = principal.getName();
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.insertCustomer(username, customer));
+		
+	}
 	
 	/*
 	 * Aim : Upload Profile pic
@@ -57,29 +57,29 @@ public class CustomerController {
 
 	
 	
-	@PostMapping("api/customer/add")
-	public ResponseEntity<Customer> addCustomerWithImage(
-	        @RequestParam("name") String name,
-	        @RequestParam("dob") String dob,
-	        @RequestParam("contact") String contact,
-	        @RequestParam("aadharNumber") String aadharNumber,
-	        @RequestParam("panNumber") String panNumber,
-	        @RequestParam("address") String address,
-	        @RequestParam("username") String username,
-	        @RequestParam("password") String password,
-	        @RequestParam("file") MultipartFile file) throws IOException {
-
-	    return ResponseEntity.status(HttpStatus.CREATED)
-	            .body(customerService.insertCustomerWithImage(name,
-	            											  dob,
-	            											  contact,
-	            											  aadharNumber,
-	            											  panNumber,
-	            											  address,
-	            											  username,
-	            											  password,
-	            											  file));
-	}
+//	@PostMapping("api/customer/add")
+//	public ResponseEntity<Customer> addCustomerWithImage(
+//	        @RequestParam("name") String name,
+//	        @RequestParam("dob") String dob,
+//	        @RequestParam("contact") String contact,
+//	        @RequestParam("aadharNumber") String aadharNumber,
+//	        @RequestParam("panNumber") String panNumber,
+//	        @RequestParam("address") String address,
+//	        @RequestParam("username") String username,
+//	        @RequestParam("password") String password,
+//	        @RequestParam("file") MultipartFile file) throws IOException {
+//
+//	    return ResponseEntity.status(HttpStatus.CREATED)
+//	            .body(customerService.insertCustomerWithImage(name,
+//	            											  dob,
+//	            											  contact,
+//	            											  aadharNumber,
+//	            											  panNumber,
+//	            											  address,
+//	            											  username,
+//	            											  password,
+//	            											  file));
+//	}
 	
 	
 	/*
