@@ -1,13 +1,20 @@
 package com.springboot.vehicleInsurance.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.springboot.vehicleInsurance.exception.ClaimNotFoundException;
 import com.springboot.vehicleInsurance.exception.PolicyHolderNotFoundException;
 import com.springboot.vehicleInsurance.model.Claim;
+import com.springboot.vehicleInsurance.model.Customer;
 import com.springboot.vehicleInsurance.model.PolicyHolder;
 import com.springboot.vehicleInsurance.repository.ClaimRepository;
 import com.springboot.vehicleInsurance.repository.PolicyHolderRepository;
@@ -91,6 +98,34 @@ public class ClaimService {
 		
 		// Put Claim in DB
 		return claimRepository.save(claim);
+	}
+
+
+
+
+	public Claim uploadDamagedPic(MultipartFile file, int policyHolderId) throws IOException {
+		Claim claim = claimRepository.getClaimByPolicyHolderId(policyHolderId);
+	    String originalFileName = file.getOriginalFilename();
+	    String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
+
+	    // Validate file type
+	    if (!List.of("jpg", "jpeg", "png", "gif", "svg").contains(extension)) {
+	        throw new RuntimeException("Invalid file extension: " + extension + ". Allowed: jpg, jpeg, png, gif, svg.");
+	    }
+
+	    long kbs = file.getSize() / 1024;
+	    if (kbs > 3000) {
+	        throw new RuntimeException("Image size too large: " + kbs + "KB. Max allowed is 3000KB.");
+	    }
+
+	    String uploadPath = "D:\\Hexaware\\Phase 3\\Springboot\\Case Study\\VehicleInsurance-UI\\public\\ClaimImages";
+	    Files.createDirectories(Path.of(uploadPath));
+	    Path path = Paths.get(uploadPath, originalFileName);
+	    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+	    claim.setImage(originalFileName);
+	    return claimRepository.save(claim);
+		
 	}
 
 }

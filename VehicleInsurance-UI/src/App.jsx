@@ -15,6 +15,8 @@ import OfficerHome from "./components/officer/OfficerHome"
 import Proposal from "./components/officer/Proposal"
 import ApprovePolicy from "./components/officer/ApprovePolicy"
 import AllPolicyDetails from "./components/officer/AllPolicyDetails"
+import ClaimPolicy from "./components/customer/ClaimPolicy"
+import ClaimApproval from "./components/officer/ClaimApproval"
 
 
 
@@ -32,6 +34,7 @@ function App() {
           <Route path="my-insurance" element={<MyInsurance />}></Route>
           <Route path="profile" element={<Profile />}></Route>
           <Route path="vehicle" element={<MyVehicle />}></Route>
+          <Route path="claim-policy" element={<ClaimPolicy />}></Route>
           <Route path="apply-policy/:pid" element={ <ApplyPolicy />}></Route>
         </Route>
         <Route path="customerRegister" element={<CustomerRegister />}></Route>
@@ -42,7 +45,7 @@ function App() {
           <Route path="proposal" element={<Proposal />}></Route>
           <Route path="approve" element={<ApprovePolicy />}></Route>
           <Route path="policy-details" element={<AllPolicyDetails />}></Route>
-        
+          <Route path="claim-approval" element={<ClaimApproval />}></Route>
         </Route>
       </Routes>
 

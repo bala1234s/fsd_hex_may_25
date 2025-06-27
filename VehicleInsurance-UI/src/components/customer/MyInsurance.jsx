@@ -1,170 +1,169 @@
 import axios from "axios";
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import '../css/MyInsurance.css'
 import { Dialog } from "primereact/dialog";
 import { Toast } from 'primereact/toast';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Button } from 'primereact/button';
+import '../css/MyInsurance.css';
 
 function MyInsurance() {
-    const [myInsurance, setMyInsurance] = useState([]);
-    let [visible, setVisible] = useState(false);
-    const [selectedQuote, setSelectedQuote] = useState(null);
+    const [insurances, setInsurances] = useState([]);
+    const [showDialog, setShowDialog] = useState(false);
+    const [selectedPolicy, setSelectedPolicy] = useState(null);
     const [quoteDetails, setQuoteDetails] = useState({});
-    const [payment, setPayment] = useState(undefined);
-
+    const [enteredAmount, setEnteredAmount] = useState('');
     const toast = useRef(null);
 
-    // fetch all insurance by customer username
-    const getMyInsurance = () => {
+    // Fetch insurance list
+    const fetchInsuranceList = () => {
         axios.get("http://localhost:8080/api/policy-holder/get", {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-        })
-            .then((resp) => {
-                console.log(resp.data);
-                setMyInsurance(resp.data);
-            }).catch((err) => {
-                console.log(err);
-            });
+        }).then(res => {
+            setInsurances(res.data);
+        }).catch(err => console.error("Error fetching insurance:", err));
     };
 
+    // Fetch quote details when dialog opens
     useEffect(() => {
-        if (visible === true) { 
-            qoute(selectedQuote);
+        if (showDialog && selectedPolicy) {
+            axios.get(`http://localhost:8080/api/quote/get-one/${selectedPolicy.id}`, {
+                headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+            }).then(res => {
+                setQuoteDetails(res.data);
+            }).catch(err => console.error("Error fetching quote:", err));
         }
-        getMyInsurance();
-    }, [visible]);
 
-    // Template for nested vehicle type
-    const vehicleTypeBodyTemplate = (rowData) => rowData.vehicle ? rowData.vehicle.vehicleType : "N/A";
-    const vehicleModelBodyTemplate = (rowData) => rowData.vehicle ? rowData.vehicle.vehicleModel : "N/A";
-    const regNumberBodyTemplate = (rowData) => rowData.vehicle ? rowData.vehicle.registrationNumber : "N/A";
-    const vehicleValueBodyTemplate = (rowData) => rowData.vehicle ? `₹${rowData.vehicle.vehicleValue}` : "N/A";
+        fetchInsuranceList(); // refresh the list on load and after payment
+    }, [showDialog]);
 
-    
-    // Template for nested policy info
-    const policyNameBodyTemplate = (rowData) => rowData.policy ? rowData.policy.policyName : "N/A";
-    const policyTypeBodyTemplate = (rowData) => rowData.policy ? rowData.policy.policyType : "N/A";
-    const policyDescBodyTemplate = (rowData) => rowData.policy ? rowData.policy.description : "N/A";
-    const policyPriceBodyTemplate = (rowData) => rowData.policy ? `₹${rowData.policy.price}` : "N/A";
-    const policyCreatedDateBodyTemplate = (rowData) => rowData.policy ? rowData.policy.createdDate : "N/A";
-
-    // Template for active status badge
-    const statusBodyTemplate = (rowData) => {
-        if (rowData.status === 'QUOTE GENERATED') {
-            return (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <span className="badge bg-warning text-dark">QUOTE GENERATED</span>
-                    <button
-                        className="btn btn-primary btn-sm mt-2"
-                        onClick={() => { setSelectedQuote(rowData); setVisible(true);   }}
-                    >
-                        View Quote
-                    </button>
-                </div>
-            );
-        } else {
-            return (
-                <span className={`badge ${rowData.active ? 'bg-success' : 'bg-danger'}`}>
-                    {rowData.active ? 'Active' : 'Inactive'}
-                </span>
-            );
-        }
+    // Handle view quote button
+    const handleViewQuote = (policy) => {
+        setSelectedPolicy(policy);
+        setShowDialog(true);
     };
-    
-    // Get Quote by policy holder id
-    const qoute = (selected) => { 
-        console.log(selected);
-        
-        axios.get(`http://localhost:8080/api/quote/get-one/${selected.id}`, {
-            headers: {'Authorization':'Bearer '+ localStorage.getItem('token')}
-        }).then((resp) => { 
-            console.log(resp);
-            setQuoteDetails(resp.data);
-           
-        }).catch((err) => { 
-            console.log(err);
-            
-        })
-        
-    }
-    //payment process
+
+    // payment process
     const paymentProcess = () => {
         let paymentObj = {
-            'paid': payment
+            paid: payment
         };
+
         console.log(payment + " " + quoteDetails.total);
-        
-        if (payment == quoteDetails.total) {
-            
+
+        if (payment === quoteDetails.total) {
             axios.post(`http://localhost:8080/api/payment/pay/${selectedQuote.id}`, paymentObj, {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-            }).then((resp) => {
-                toast.current.show({ severity: 'success', summary: 'Payment Success', detail: 'Payment Completed Successfully', life: 3000 });
-                getMyInsurance(); //<--After payment success call the insurance details method to view updated data 
-                setVisible(false); //<-- closing the payment dialog popup
-            }).catch((err) => {
-                toast.current.show({ severity: 'error', summary: 'Payment Failed', detail: 'Something went wrong', life: 3000 });
+            }).then(() => {
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Payment Success',
+                    detail: 'Payment Completed Successfully',
+                    life: 3000
+                });
+                getMyInsurance();   // Refresh data
+                setVisible(false);  // Close dialog
+            }).catch(() => {
+                toast.current.show({
+                    severity: 'error',
+                    summary: 'Payment Failed',
+                    detail: 'Something went wrong',
+                    life: 3000
+                });
             });
-        } else { 
-            toast.current.show({ severity: 'warn', summary: 'Insufficent Payment', detail: 'You cancelled the payment', life: 3000 });
+        } else {
+            toast.current.show({
+                severity: 'warn',
+                summary: 'Insufficient Payment',
+                detail: 'Entered amount is not correct',
+                life: 3000
+            });
         }
     };
 
-    // confirm dialog for get confirm for payment 
+    // confirm dialog before payment
     const confirmPayment = () => {
         confirmDialog({
             message: 'Are you sure you want to proceed with payment?',
             header: 'Payment Confirmation',
             icon: 'pi pi-exclamation-triangle',
             accept: paymentProcess,
-            reject: () => { toast.current.show({ severity: 'warn', summary: 'Payment Cancelled', detail: 'You cancelled the payment', life: 3000 }); }
+            reject: () => {
+                toast.current.show({
+                    severity: 'warn',
+                    summary: 'Payment Cancelled',
+                    detail: 'You cancelled the payment',
+                    life: 3000
+                });
+            }
         });
     };
-    
+
+
+    // Status column content
+    const statusTemplate = (policy) => {
+        if (policy.status === "QUOTE GENERATED") {
+            return (
+                <div className="text-center">
+                    <span className="badge bg-warning text-dark">QUOTE GENERATED</span>
+                    <Button label="View Quote" className="mt-2" onClick={() => handleViewQuote(policy)} />
+                </div>
+            );
+        }
+        return (
+            <span className={`badge ${policy.active ? 'bg-success' : 'bg-danger'}`}>
+                {policy.active ? "Active" : "Inactive"}
+            </span>
+        );
+    };
 
     return (
-        <div className=" mt-4 ml-5" style={{width:'90rem'}}>
-            <h2 className="text-center mb-4 text-primary">My Insurance Policies</h2>
-            <DataTable value={myInsurance} paginator rows={5} scrollable scrollHeight="400px"
-                tableStyle={{ width:'120rem',tableLayout: 'auto', padding: '1rem' }} className="custom-header">
+        <div className="mt-4 ml-5" style={{ width: '90rem' }}>
+            <h2 className="text-center text-primary mb-4">My Insurance Policies</h2>
 
-                <Column header="Policy Name" body={policyNameBodyTemplate} style={{ width: '10%' }} />
-                <Column field="status" header="Status" style={{ width: '8%' }} />
-                <Column field="startDate" header="Start Date" style={{ width: '8%' }} />
-                <Column field="endDate" header="End Date" style={{ width: '8%' }} />
-                <Column header="Vehicle Type" body={vehicleTypeBodyTemplate} style={{ width: '8%' }} />
-                <Column header="Vehicle Model" body={vehicleModelBodyTemplate} style={{ width: '8%' }} />
-                <Column header="Reg No" body={regNumberBodyTemplate} style={{ width: '8%' }} />
-                <Column header="Vehicle Value" body={vehicleValueBodyTemplate} style={{ width: '8%' }} />
-                <Column header="Policy Type" body={policyTypeBodyTemplate} style={{ width: '8%' }} />
-                <Column header="Description" body={policyDescBodyTemplate} style={{ width: '10%' }} />
-                <Column header="Price" body={policyPriceBodyTemplate} style={{ width: '8%' }} />
-                <Column header="Created Date" body={policyCreatedDateBodyTemplate} style={{ width: '8%' }} />
-                <Column header="Active Status" body={statusBodyTemplate} style={{ width: '8%' }} />
+            <DataTable value={insurances} tableStyle={{ width: '120rem', tableLayout: 'auto', padding: '1rem' }} paginator rows={5} scrollable scrollHeight="400px">
+                <Column header="Policy Name" body={(row) => row.policy.policyName} />
+                <Column field="status" header="Status" />
+                <Column field="startDate" header="Start Date" />    
+                <Column field="endDate" header="End Date" />
+                <Column header="Vehicle Type" body={(row) => row.vehicle.vehicleType} />
+                <Column header="Model" body={(row) => row.vehicle.vehicleModel } />
+                <Column header="Reg No" body={(row) => row.vehicle.registrationNumber } />
+                <Column header="Vehicle Value" body={(row) =>   `₹${row.vehicle.vehicleValue}` } />
+                <Column header="Policy Type" body={(row) => row.policy.policyType } />
+                <Column header="Description" body={(row) => row.policy.description} />
+                <Column header="Price" body={(row) =>   `₹${row.policy.price}` } />
+                <Column header="Created" body={(row) => row.policy.createdDate } />
+                <Column header="Active Status" body={statusTemplate} />
             </DataTable>
 
+            {/* Toast for messages */}
             <Toast ref={toast} />
             <ConfirmDialog />
 
-            <Dialog header="Quote Details" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                {selectedQuote && (
-                    <div>
-                        <p><strong>Policy Name:</strong> {selectedQuote.policy?.policyName}</p>
-                        <p><strong>Vehicle Model:</strong> {selectedQuote.vehicle?.vehicleModel}</p>
-                        <p><strong>Premium: </strong>{quoteDetails.premium}</p>
-                        <p><strong>Add-on: </strong>{quoteDetails.addOnPrice}</p>
-                        <p><strong>Total: </strong>{quoteDetails.total}</p>
+            {/* Payment Dialog */}
+            <Dialog header="Quote Details" visible={showDialog} onHide={() => setShowDialog(false)} style={{ width: '40vw' }}>
+                {selectedPolicy && (
+                    <div style={{ color: 'black' }}>
+                        <p><strong>Policy:</strong> {selectedPolicy.policy?.policyName}</p>
+                        <p><strong>Vehicle:</strong> {selectedPolicy.vehicle?.vehicleModel}</p>
+                        <p><strong>Premium:</strong> ₹{quoteDetails.premium}</p>
+                        <p><strong>Add-On:</strong> ₹{quoteDetails.addOnPrice}</p>
+                        <p><strong>Total:</strong> ₹{quoteDetails.total}</p>
 
-                        <input type="number" className="form-control" placeholder="Enter Payment" onChange={($e) => setPayment($e.target.value)} />
-                        <br />
-                        <Button className="btn btn-primary" onClick={confirmPayment}>Pay Now</Button>
+                        <input
+                            type="number"
+                            className="form-control my-2"
+                            placeholder="Enter payment amount"
+                            value={enteredAmount}
+                            onChange={(e) => setEnteredAmount(e.target.value)}
+                        />
+
+                        <Button label="Pay Now" className="btn btn-primary" onClick={confirmPayment} />
                     </div>
                 )}
             </Dialog>
-
         </div>
     );
 }

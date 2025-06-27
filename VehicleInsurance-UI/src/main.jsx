@@ -16,7 +16,7 @@ import { PrimeReactProvider } from 'primereact/api';
 createRoot(document.getElementById('root')).render(
   <PrimeReactProvider>
   <Provider store={store}>
-    <App />
+    <App /> 
     </Provider>
   </PrimeReactProvider>
 )

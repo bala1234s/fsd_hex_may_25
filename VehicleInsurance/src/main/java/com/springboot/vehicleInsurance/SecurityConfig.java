@@ -69,6 +69,7 @@ public class SecurityConfig {
 						.requestMatchers("api/payment/pay/{policyHolderId}").hasAuthority("CUSTOMER")
 						.requestMatchers("api/payment/get-all").hasAuthority("OFFICER")
 						.requestMatchers("api/claim/request/{policyHolderId}").hasAuthority("CUSTOMER")
+						.requestMatchers("api/claim/upload-damage-pic/{policyHolderId}").hasAuthority("CUSTOMER")
 						.requestMatchers("api/claim/get-one").hasAuthority("CUSTOMER")
 						.requestMatchers("api/claim/get-all").hasAuthority("OFFICER")
 						.requestMatchers("api/claim/approve").hasAuthority("OFFICER")

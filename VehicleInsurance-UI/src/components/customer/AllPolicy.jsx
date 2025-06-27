@@ -8,6 +8,10 @@ import { Link } from "react-router-dom";
 function AllPolicy() {
     const dispatch = useDispatch();
     let [allPolicy,] = useState(useSelector(state => state.allPolicy.allPolicy));
+    const itemsPerPage = 2;
+    let [page, setPage] = useState(0);
+
+    const paginatedPolicies = allPolicy.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
     console.log(allPolicy);
     
     
@@ -31,25 +35,33 @@ function AllPolicy() {
                 </div>
                 <div className="row">
                     {
-                        allPolicy.map((p) => (
-
+                        paginatedPolicies.map((p) => (
                             <div className="col-sm-6" key={p.id}>
-                                <div className="card" >
+                                <div className="card">
                                     <div className="card-body">
                                         <h5 className="card-title">Policy: {p.policyName}</h5>
-                                        <p className="card-text">Policy Type: {p.policyType} </p>
+                                        <p className="card-text">Policy Type: {p.policyType}</p>
                                         <p className="card-text">Description: {p.description}</p>
                                         <p className="card-text">Price: {p.price}</p>
                                         <Link to={`/policyDetails/${p.id}`} className="btn btn-primary">Get Quote</Link>
                                     </div>
                                     <div className="card-footer">Created Date: {p.createdDate}</div>
-                                   
                                 </div>
                             </div>
                         ))
                     }
-
                 </div>
+
+                <div className="d-flex justify-content-between mt-4">
+                    <button className="btn btn-secondary" onClick={() => {
+                        if (page > 0) setPage(page - 1);
+                    }}>Previous</button>
+
+                    <button className="btn btn-primary" onClick={() => {
+                        if ((page + 1) * itemsPerPage < allPolicy.length) setPage(page + 1);
+                    }}>Next</button>
+                </div>
+
 
             </div>
 
