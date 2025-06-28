@@ -12,7 +12,7 @@ function OfficerDashboard() {
                     <OfficerSidebar className="m-5 p-5"  />
                 </div>
                 <div style={{marginTop:'3rem',width:'100%'}}>
-                    <Outlet style={{ padding: '8rem' }} />
+                    <Outlet  />
 
                 </div>
            

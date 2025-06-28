@@ -38,7 +38,10 @@ function ClaimPolicy() {
             // Api to post Damage Image
             axios.post(`http://localhost:8080/api/claim/upload-damage-pic/${resp.data.policyHolder.id}`, formData, {
                 headers: { 'Authorization': 'Bearer ' + token }
-            }).then(resp => console.log("Image Post")).catch(err => console.log(err))
+            }).then(resp => {
+                console.log("Image Post");
+                setVisible(false);
+            } ).catch(err => console.log(err))
         }).catch(err=> console.log(err))
     }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Stepper } from 'primereact/stepper';
 import { StepperPanel } from 'primereact/stepperpanel';
 import { Button } from 'primereact/button';
@@ -20,6 +20,7 @@ function ApplyPolicy() {
 
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    let navigate = useNavigate();
 
 
     useEffect(() => {
@@ -79,6 +80,7 @@ function ApplyPolicy() {
             .then(resp => {
                 alert("Policy Applied Successfully!");
                 console.log(resp.data);
+                navigate('/customer/my-insurance')
             })
             .catch(err => console.log(err));
     };

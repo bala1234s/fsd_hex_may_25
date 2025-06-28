@@ -34,7 +34,7 @@ public class CustomerService {
 
 
 /*Add new Customer*/
-	public Customer insertCustomer(String username, Customer customer) {
+	public Customer insertCustomer( Customer customer) {
 		// Get User object from the Customer
 		User user = customer.getUser();
 		logger.info("Fetch User from Customer");

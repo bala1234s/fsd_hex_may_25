@@ -91,8 +91,9 @@ function Proposal() {
         axios.post(`http://localhost:8080/api/quote/send/${selectedProposal.id}`, quote, {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
-            .then(() => {
+            .then((resp) => {
                 setVisible(false);
+                setProposals((pre)=> [...pre,resp.data])
                 alert('Quote Sent Successfully!');
             })
             .catch((err) => console.log("Error sending quote:", err));

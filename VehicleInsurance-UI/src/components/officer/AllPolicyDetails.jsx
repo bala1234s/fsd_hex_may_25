@@ -10,6 +10,7 @@ function AllPolicyDetails() {
 
     // Token 
     let token = localStorage.getItem('token');
+    
     const [policyName, setPolicyName] = useState("");
     const [policyType, setPolicyType] = useState("");
     const [description, setDescription] = useState("");
@@ -17,11 +18,15 @@ function AllPolicyDetails() {
     const [visible, setVisible] = useState(false);
     const dispatch = useDispatch();
     const [policy, setPolicy] = useState(useSelector(state => state.allPolicy.allPolicy));
+    const [selectedPolicy, setSelectedPolicy] = useState(null);
+    const [editVisible, setEditVisible] = useState(false);
 
+
+    const itemsPerPage = 2;
     let [page, setPage] = useState(0);
-    let [size, setSize] = useState(10);
-    let [count, setCount] = useState(0);
 
+    const paginatedPolicies = policy.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+    // console.log(allPolicy);
     useEffect(() => {
         fetchAllPolicies(dispatch);
     }, [dispatch])
@@ -44,6 +49,34 @@ function AllPolicyDetails() {
     }
 
 
+    const editPolicy = (policy) => {
+        setSelectedPolicy(policy);
+        setEditVisible(true);
+    };
+
+    const deletePolicy = (id) => {
+        axios.delete(`http://localhost:8080/api/policy/delete/${id}`, {
+            headers: { "Authorization": 'Bearer ' + token }
+        }).then(() => {
+            setPolicy(prev => prev.filter(p => p.id !== id));
+            alert("Policy deleted successfully!");
+        }).catch(err => console.log(err));
+    };
+    
+    const updatePolicy = () => {
+        axios.put(`http://localhost:8080/api/policy/update/${selectedPolicy.id}`, selectedPolicy, {
+            headers: { "Authorization": 'Bearer ' + token }
+        }).then(resp => {
+            setPolicy(prev => prev.map(p => p.id === resp.data.id ? resp.data : p));
+            setEditVisible(false);
+            setSelectedPolicy(null);
+            fetchAllPolicies(dispatch);
+            alert("Policy updated successfully!");
+        }).catch(err => console.log(err));
+    };
+    
+    
+    
     return (
         <div className="container mt-5">
             <div className="row">
@@ -54,12 +87,13 @@ function AllPolicyDetails() {
                     </div>
                     <div>
 
-                        <button style={{backgroundColor:'rgb(24, 66, 158)'}} className="btn btn-primary"  onClick={() => setVisible(true)}>Add New Policy</button>
+                        <button style={{ backgroundColor: 'rgb(24, 66, 158)' }} className="btn btn-primary" onClick={() => setVisible(true)}>Add Policy</button>
+
                     </div>
                 </div>
                 <div className="col-md-12" style={{ display: 'flex', justifyContent: 'space-between' , gap:'20px'}}>
                     {
-                        policy?.map((p) => (
+                        paginatedPolicies.map((p) => (
 
                             <div className="col-sm-6" key={p.id}  >
                                 <div className="card" >
@@ -71,8 +105,17 @@ function AllPolicyDetails() {
                                         <div className="card-text">Created Date: {p.createdDate}</div>
                                     </div>
                                     <div className="card-footer">
-                                        <Button icon="pi pi-pencil" className="p-button-rounded p-button-info" onClick={() => editVehicle(rowData)} />
-                                        <Button icon="pi pi-trash" className="p-button-rounded p-button-danger ml-2" onClick={() => deleteVehicle(rowData.id)} />
+                                        <Button
+                                            icon="pi pi-pencil"
+                                            className="p-button-rounded p-button-info"
+                                            onClick={() => editPolicy(p)}
+                                        />
+                                        <Button
+                                            icon="pi pi-trash"
+                                            className="p-button-rounded p-button-danger ml-2"
+                                            onClick={() => deletePolicy(p.id)}
+                                        />
+
                                     </div>
 
                                 </div>
@@ -81,16 +124,14 @@ function AllPolicyDetails() {
                     }
                 </div>
             </div>
-            <div className="row">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><button class="page-link" href="#">Previous</button></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><button class="page-link" href="#">Next</button></li>
-                    </ul>
-                </nav>
+            <div className="d-flex justify-content-between mt-4">
+                <button className="btn btn-secondary" onClick={() => {
+                    if (page > 0) setPage(page - 1);
+                }}>Previous</button>
+
+                <button className="btn btn-primary" onClick={() => {
+                    if ((page + 1) * itemsPerPage < policy.length) setPage(page + 1);
+                }}>Next</button>
             </div>
             
            
@@ -118,6 +159,42 @@ function AllPolicyDetails() {
                     </div>
                
             </Dialog>
+            <Dialog header="Edit Policy" visible={editVisible} style={{ width: '50vw' }} onHide={() => setEditVisible(false)}>
+                {selectedPolicy && (
+                    <div className="p-fluid">
+                        <div className="mb-3">
+                            <label>Policy Name</label>
+                            <input type="text" className="form-control"
+                                value={selectedPolicy.policyName}
+                                onChange={(e) => setSelectedPolicy({ ...selectedPolicy, policyName: e.target.value })}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label>Policy Type</label>
+                            <input type="text" className="form-control"
+                                value={selectedPolicy.policyType}
+                                onChange={(e) => setSelectedPolicy({ ...selectedPolicy, policyType: e.target.value })}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label>Description</label>
+                            <textarea className="form-control"
+                                value={selectedPolicy.description}
+                                onChange={(e) => setSelectedPolicy({ ...selectedPolicy, description: e.target.value })}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label>Price</label>
+                            <input type="number" className="form-control"
+                                value={selectedPolicy.price}
+                                onChange={(e) => setSelectedPolicy({ ...selectedPolicy, price: e.target.value })}
+                            />
+                        </div>
+                        <Button label="Update Policy" className="btn btn-primary" onClick={updatePolicy} />
+                    </div>
+                )}
+            </Dialog>
+
         </div>
     )
 }

@@ -36,10 +36,10 @@ public class CustomerController {
 	 * */
 	
 	@PostMapping("api/customer/add")
-	public ResponseEntity<Customer> add(Principal principal, @RequestBody Customer customer) {
-		String username = principal.getName();
+	public ResponseEntity<Customer> add( @RequestBody Customer customer) {
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.insertCustomer(username, customer));
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(customerService.insertCustomer(customer));
 		
 	}
 	

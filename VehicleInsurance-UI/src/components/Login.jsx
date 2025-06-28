@@ -51,7 +51,8 @@ function Login() {
             localStorage.setItem('name', userDetails.data.name);
             
             showSuccess("Login Success")// <-- Toast Message Login Success
-
+            // set role
+            localStorage.setItem('role', userDetails.data.user.role);
             setTimeout(() => { 
 
                 // Navigate based on role

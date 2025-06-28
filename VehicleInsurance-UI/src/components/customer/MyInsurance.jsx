@@ -13,7 +13,7 @@ function MyInsurance() {
     const [showDialog, setShowDialog] = useState(false);
     const [selectedPolicy, setSelectedPolicy] = useState(null);
     const [quoteDetails, setQuoteDetails] = useState({});
-    const [enteredAmount, setEnteredAmount] = useState('');
+    const [payment, setPayment] = useState(0);
     const toast = useRef(null);
 
     // Fetch insurance list
@@ -52,8 +52,8 @@ function MyInsurance() {
 
         console.log(payment + " " + quoteDetails.total);
 
-        if (payment === quoteDetails.total) {
-            axios.post(`http://localhost:8080/api/payment/pay/${selectedQuote.id}`, paymentObj, {
+        if (payment == quoteDetails.total) {
+            axios.post(`http://localhost:8080/api/payment/pay/${selectedPolicy.id}`, paymentObj, {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
             }).then(() => {
                 toast.current.show({
@@ -62,15 +62,11 @@ function MyInsurance() {
                     detail: 'Payment Completed Successfully',
                     life: 3000
                 });
-                getMyInsurance();   // Refresh data
+                fetchInsuranceList();   // Refresh data
                 setVisible(false);  // Close dialog
-            }).catch(() => {
-                toast.current.show({
-                    severity: 'error',
-                    summary: 'Payment Failed',
-                    detail: 'Something went wrong',
-                    life: 3000
-                });
+            }).catch((err) => {
+               console.log(err);
+                
             });
         } else {
             toast.current.show({
@@ -156,8 +152,8 @@ function MyInsurance() {
                             type="number"
                             className="form-control my-2"
                             placeholder="Enter payment amount"
-                            value={enteredAmount}
-                            onChange={(e) => setEnteredAmount(e.target.value)}
+                            value={payment  }
+                            onChange={(e) => setPayment(e.target.value)}
                         />
 
                         <Button label="Pay Now" className="btn btn-primary" onClick={confirmPayment} />

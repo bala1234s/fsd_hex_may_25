@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.springboot.vehicleInsurance.exception.ResourceNotFoundException;
 import com.springboot.vehicleInsurance.model.EPolicy;
 import com.springboot.vehicleInsurance.repository.PolicyRepository;
 @Service
@@ -43,4 +44,28 @@ public class PolicyService {
 		return policyRepository.findAll();
 	}
 
+	public EPolicy updatePolicy(int policyId, EPolicy newPolicy) {
+        EPolicy policy = policyRepository.findById(policyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Policy Not Found"));
+
+        if (newPolicy.getPolicyName() != null) {
+            policy.setPolicyName(newPolicy.getPolicyName());
+        }
+        if (newPolicy.getPrice() != 0) {
+            policy.setPrice(newPolicy.getPrice());
+        }
+        if (newPolicy.getPolicyType() != null) {
+            policy.setPolicyType(newPolicy.getPolicyType());
+        }
+        if (newPolicy.getDescription() != null) {
+            policy.setDescription(newPolicy.getDescription());
+        }
+        // Add more fields if needed
+
+        return policyRepository.save(policy);
+    }
+
+    public void deletePolicy(int policyId) {
+        policyRepository.deletePolicy(policyId);
+    }
 }
