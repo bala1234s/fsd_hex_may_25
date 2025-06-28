@@ -25,7 +25,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Prefight - Allows the permit all  
 						.requestMatchers("api/customer/add").permitAll()
-						.requestMatchers("api/customer/upload/profile-pic").permitAll()
+						.requestMatchers("api/customer/upload/profile-pic/{customerId}").permitAll()
 						.requestMatchers("api/user/signup").permitAll()
 						.requestMatchers("api/officer/add").permitAll()
 						.requestMatchers("api/policy/get-all").permitAll()

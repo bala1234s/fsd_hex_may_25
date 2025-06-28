@@ -34,7 +34,7 @@ function Profile() {
         const formData = new FormData();
         formData.append('file', profilePic);
         //upload profile pic
-        axios.post("http://localhost:8080/api/customer/upload/profile-pic", formData, {
+        axios.post(`http://localhost:8080/api/customer/upload/profile-pic/${profile.id}`, formData, {
             headers: {'Authorization':'Bearer '+token}
         }).then((resp) => { 
             console.log(resp.data.profilePic);

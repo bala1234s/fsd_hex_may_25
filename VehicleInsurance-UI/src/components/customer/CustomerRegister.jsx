@@ -1,15 +1,17 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CustomerRegister() {
 
-   
 
+    const [profilePic, setProfilePic] = useState("");
+    const navigate = useNavigate();
     const handleRegister = async (event) => {
         event.preventDefault(); // prevent page reload
 
         const form = event.target;
-        
+
         const customerForm = {
             'name': form.name.value,
             'contact': form.contact.value,
@@ -25,25 +27,28 @@ function CustomerRegister() {
 
         console.log("Form Data:", customerForm);
 
-        // formData.append("name", form.name.value);
-        // formData.append("contact", form.contact.value);
-        // formData.append("aadharNumber", form.aadhar.value);
-        // formData.append("address", form.address.value);
-        // formData.append("panNumber", form.panNumber.value);
-        // formData.append("dob", form.dob.value);
-        // formData.append("username", form.username.value);
-        // formData.append("password", form.password.value);
-        // formData.append("file", profilePic); // <-- Upload profile pic
 
-        try {
-            const resp = await axios.post("http://localhost:8080/api/customer/add", customerForm);
-            
-            console.log("Response:", resp.data);
-            alert("Customer registered successfully!");
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Registration failed!");
-        }
+        axios.post("http://localhost:8080/api/customer/add", customerForm)
+            .then((resp) => {
+
+                console.log("Response:", resp.data);
+
+                const formData = new FormData();
+                formData.append("file", profilePic); // <-- Upload profile pic
+                axios.post(`http://localhost:8080/api/customer/upload/profile-pic/${resp.data.id}`, formData)
+                    .then((res) => console.log("Image Posted"))
+                    .catch(err => console.log(err))
+
+
+                alert("Customer registered successfully!");
+                navigate('/login')
+            }).catch((err) => {
+                alert('Register Failed');
+                console.log(err);
+                
+             })
+
+
     };
 
     return (
@@ -93,7 +98,11 @@ function CustomerRegister() {
                                         <label className="form-label">Password</label>
                                         <input type="password" name="password" className="form-control" required />
                                     </div>
-                                    
+                                    <div className="col-md-6">
+                                        <label className="form-label">Upload Pic</label>
+                                        <input type="file" className="form-control" onChange={($e)=>setProfilePic($e.target.files[0])} required />
+                                    </div>
+
                                     <div className="col-12">
                                         <button type="submit" className="btn btn-primary">Sign in</button>
                                     </div>

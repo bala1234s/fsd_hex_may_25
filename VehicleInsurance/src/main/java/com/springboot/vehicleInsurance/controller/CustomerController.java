@@ -50,9 +50,9 @@ public class CustomerController {
 	 * Input : File 
 	 * */
 	
-	@PostMapping("api/customer/upload/profile-pic")
-	public Customer uploadProfilePic(Principal principal, @RequestParam("file") MultipartFile file) throws IOException {
-	    return customerService.uploadProfilePic(file, principal.getName());
+	@PostMapping("api/customer/upload/profile-pic/{customerId}")
+	public Customer uploadProfilePic(@PathVariable int customerId, @RequestParam("file") MultipartFile file) throws IOException {
+	    return customerService.uploadProfilePic(file,customerId);
 	}
 
 	

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.springboot.vehicleInsurance.exception.CustomerNotFoundException;
 import com.springboot.vehicleInsurance.model.Customer;
 import com.springboot.vehicleInsurance.model.User;
 import com.springboot.vehicleInsurance.repository.CustomerRepository;
@@ -143,8 +144,9 @@ public class CustomerService {
 
 
 
-	public Customer uploadProfilePic(MultipartFile file, String username) throws IOException {
-	    Customer customer = customerRepository.getByUsername(username);
+	public Customer uploadProfilePic(MultipartFile file, int customerId) throws IOException {
+	    Customer customer = customerRepository.findById(customerId)
+	    		.orElseThrow(()-> new CustomerNotFoundException("Customer Not Found"));
 	    logger.info("Customer Name: " + customer.getName());
 
 	    String originalFileName = file.getOriginalFilename();
