@@ -7,16 +7,17 @@ function ClaimApproval() {
 
     const [claim, setClaim] = useState([]);
 
-    useEffect(() => {
-        const getAllClaim = () => {
-            axios.get('http://localhost:8080/api/claim/get-all', {
-                headers: { 'Authorization': 'Bearer ' + token }
-            }).then((resp) => {
-                console.log(resp.data);
+    // get the claim details
+    const getAllClaim = () => {
+        axios.get('http://localhost:8080/api/claim/get-all', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        }).then((resp) => {
+            console.log(resp.data);
 
-                setClaim(resp.data.filter((data)=>data.policyHolder.status != "CLAIMED"));
-            }).catch(err => console.log(err))
-        }
+            setClaim(resp.data.filter((data)=>data.policyHolder.status != "CLAIMED"));
+        }).catch(err => console.log(err))
+    }
+    useEffect(() => {
 
         getAllClaim();
     }, []) 
@@ -29,6 +30,7 @@ function ClaimApproval() {
             headers:{'Authorization':'Bearer '+ token}
         }).then((resp) => { 
             console.log(resp);
+            getAllClaim();
             setClaim((pre) => [...pre, resp.data]);
 
         }).catch(err=>console.log(err))
@@ -42,8 +44,9 @@ function ClaimApproval() {
                             <h3>No Claim Data</h3>
                         ) : (
                             claim.map((p) => (
-                                <div className="card" style={{ display: 'flex', flexDirection: 'row', width: '60rem', justifyContent: 'space-between' }}>
-                                    <div className="card-body" key={p.id}>
+                                <div className="card" key={p.id} style={{ display: 'flex', flexDirection: 'row', width: '60rem', justifyContent: 'space-between' }}>
+                                    {/* Display the claim details */}
+                                    <div className="card-body" >
                                         <img src={`../ClaimImages/${p.image}`} alt="" />
                                     </div>
                                     <div className="card-body ml-5">

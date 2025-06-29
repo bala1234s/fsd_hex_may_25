@@ -1,5 +1,7 @@
 package com.springboot.vehicleInsurance.model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -40,6 +42,23 @@ public class AddOnsDetails {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(description, id, name, price);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AddOnsDetails other = (AddOnsDetails) obj;
+		return Objects.equals(description, other.description) && id == other.id && Objects.equals(name, other.name)
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price);
+	}
+	
 	
 	
 

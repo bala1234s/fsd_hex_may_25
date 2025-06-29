@@ -98,7 +98,7 @@ public class CustomerService {
 	public Customer getById(int id) {
 		
 		return customerRepository.findById(id)
-		        .orElseThrow(() -> new RuntimeException("Invalid ID: " + id));
+		        .orElseThrow(() -> new CustomerNotFoundException("Invalid ID: " + id));
 	}
 
 

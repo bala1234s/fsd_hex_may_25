@@ -13,6 +13,7 @@ function Profile() {
     let token = localStorage.getItem('token');
 
     useEffect(() => {
+        // get customer details
         const getCustomerProfile = () => {
             axios.get("http://localhost:8080/api/customer/get-one", {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
@@ -27,12 +28,13 @@ function Profile() {
                 })
         }
 
-        getCustomerProfile();
+        getCustomerProfile();//<-- calling customer details
     }, [])
 
     const uploadImage = () => { 
         const formData = new FormData();
         formData.append('file', profilePic);
+
         //upload profile pic
         axios.post(`http://localhost:8080/api/customer/upload/profile-pic/${profile.id}`, formData, {
             headers: {'Authorization':'Bearer '+token}
@@ -48,6 +50,8 @@ function Profile() {
         })
 
     }
+
+    // edit the profile 
     const editProfile = (event) => {
         event.preventDefault();
         let formProfile = event.target;
@@ -89,6 +93,7 @@ function Profile() {
                                 <h4 style={{ color: 'white' }}><FaUser  />Profile</h4>
                                 <Button label="Edit Profile" icon="pi pi-pencil" style={{backgroundColor:'white'}} className="p-button-outlined" onClick={() => setVisible(true)} />
                             </div>
+                            {/* Dialog prime react */}
                             <Dialog header="Edit Profile" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                                 <form onSubmit={editProfile}>
                                     <div className="mb-3">
@@ -119,7 +124,7 @@ function Profile() {
                                     </div>
                                     <div className="col-md-6">
                                         <label className="form-label">Upload Profile</label>
-                                        <input type="file" onChange={($e) => setProfilePic($e.target.files[0])} required />
+                                        <input type="file" className="form-control" onChange={($e) => setProfilePic($e.target.files[0])} />
                                     </div>
                                     <div>
                                         <button className="btn btn-primary" type="submit" >Save Changes</button>
@@ -130,13 +135,14 @@ function Profile() {
 
                         <div className="card-body">
                             <strong>Profile Pic</strong>
+                            {/* Display the Profile Details */}
                             <img src={`../ProfilePic/${profile.profilePic}`} alt="Profile" class="img-thumbnail" style={{
                                 height:'200px', width:'200px',borderRadius:'50%'
                             }}/>
 
                             <p className="form-control"><strong>Name </strong>{profile.name}</p>
                             <p className="form-control"><strong>Contact </strong>{profile.contact}</p>
-                            <p className="form-control"><strong>Address </strong>{profile.address}</p>
+                            <p className="form-control"><strong>City </strong>{profile.address}</p>
                             <p className="form-control"><strong>DOB </strong>{profile.dob}</p>
                             <p className="form-control"><strong>Age </strong>{profile.age}</p>
                             <p className="form-control"><strong>Pan Number </strong>{profile.panNumber}</p>
@@ -149,4 +155,4 @@ function Profile() {
     )
 }
 
-export default Profile;
+export default Profile; 

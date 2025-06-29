@@ -7,7 +7,10 @@ function PolicyDetails() {
     const param = useParams();
     const [policyDetail, setPolicyDetail] = useState({});
     const [reviews, setReviews] = useState([]);
+
+    // 
     useEffect(() => {
+        // Get policy Details API
         const getPolicyDetails = () => {
             axios.get(`http://localhost:8080/api/policy/get-one/${param.pid}`)
                 .then((resp) => {
@@ -20,6 +23,7 @@ function PolicyDetails() {
                 })
         }
 
+        //  Get Review Details API
         const getReview = () => {
             axios.get(`http://localhost:8080/api/review/get/${param.pid}`)
                 .then((resp) => { 
@@ -28,8 +32,8 @@ function PolicyDetails() {
                 })
         }
 
-        getPolicyDetails();
-        getReview();
+        getPolicyDetails(); //<-- calling get policy 
+        getReview();//<-- calling review
     }, [])
 
     return (
@@ -43,6 +47,7 @@ function PolicyDetails() {
                             <div className="card-header bg-gradient " style={{ background: 'linear-gradient(to right, #007bff, #00c6ff)' }}>
                                 <h4 className="mb-0">{policyDetail.policyName }</h4>
                             </div>
+                            {/*  Display Policy Details*/}
                             <div className="card-body">
                                 <p><strong>Policy Name:</strong> {policyDetail.policyName}</p>
                                 <p><strong>Type:</strong> {policyDetail.policyType}</p>
@@ -50,6 +55,7 @@ function PolicyDetails() {
                                 <p><strong>Price:</strong> ₹{policyDetail.price}</p>
                                 <p><strong>Created Date:</strong> {policyDetail.createdDate}</p>
                             </div>
+
                             <div className="card-footer text-center bg-light">
                                 <Link to={`/customer/apply-policy/${ policyDetail.id}`} className="btn btn-primary btn-lg apply-btn">
                                     Apply for Policy
@@ -59,8 +65,11 @@ function PolicyDetails() {
 
                         <div className="accordion mt-4" id="reviewAccordion">
                             <h4 className="text-center mb-3">Customer Reviews</h4>
+                            {/* Display review */}
                             {reviews.length === 0 && <p className="text-center text-muted">No reviews available for this policy.</p>}
-                            {reviews.map((review, index) => (
+                            
+                            {
+                                reviews.map((review, index) => (
                                 <div className="accordion-item" key={index}>
                                     <h2 className="accordion-header" id={`heading${index}`}>
                                         <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${index}`} aria-expanded="false" aria-controls={`collapse${index}`}>
@@ -76,7 +85,8 @@ function PolicyDetails() {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                                ))
+                            }
                         </div>
 
                     </div>

@@ -26,7 +26,7 @@ const SideBar = () => {
 
                     <Link to={"/customer/profile"}><li><FaUser style={{ marginRight: "8px" }} /> Profile</li></Link>
                     <Link to={"/customer/vehicle"}><li><FaCarSide style={{ marginRight: "8px" }} /> My Vehicle</li></Link>
-                    <Link> <li><FaCog style={{ marginRight: "8px" }} /> Settings</li></Link>
+                    
                     <Logout />
                 </ul>
             </Sidebar>

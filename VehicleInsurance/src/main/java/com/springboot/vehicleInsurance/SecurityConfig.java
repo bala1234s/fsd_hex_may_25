@@ -27,7 +27,11 @@ public class SecurityConfig {
 						.requestMatchers("api/customer/add").permitAll()
 						.requestMatchers("api/customer/upload/profile-pic/{customerId}").permitAll()
 						.requestMatchers("api/user/signup").permitAll()
+						
 						.requestMatchers("api/officer/add").permitAll()
+						.requestMatchers("api/officer/get").hasAuthority("OFFICER")
+						.requestMatchers("api/officer/update/{officerId}").hasAuthority("OFFICER")
+						
 						.requestMatchers("api/policy/get-all").permitAll()
 						.requestMatchers("api/policy/get-all-v2").permitAll()
 						.requestMatchers("api/policy/get-one/{policyId}").permitAll()
@@ -58,8 +62,9 @@ public class SecurityConfig {
 
 						.requestMatchers("api/policy-holder/get-all").hasAuthority("OFFICER")
 						.requestMatchers("api/policy-holder/getAll").hasAuthority("OFFICER")
-						.requestMatchers("api/policy-holder/get-one-details/{policyHolderId}").hasAuthority("OFFICER")
+						.requestMatchers("api/policy-holder/get-one-details/{policyHolderId}").hasAnyAuthority("CUSTOMER", "OFFICER")
 						.requestMatchers("api/policy-holder/approve").hasAuthority("OFFICER")
+						.requestMatchers("api/policy-holder/deactivate").hasAuthority("OFFICER")
 
 						.requestMatchers("api/add-on/get-all").hasAuthority("OFFICER")
 						.requestMatchers("api/add-on/get-all/{policyHolderId}").hasAuthority("OFFICER")
@@ -83,6 +88,7 @@ public class SecurityConfig {
 
 						.requestMatchers("api/review/add/{customerId}/{policyId}").hasAuthority("CUSTOMER")
 						.requestMatchers("api/review/get/{policyId}").permitAll() 
+						.requestMatchers("api/review/get-all").permitAll() 
 
 						.anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

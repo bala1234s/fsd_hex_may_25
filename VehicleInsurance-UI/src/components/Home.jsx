@@ -1,35 +1,50 @@
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import "./css/Home.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Home() {
+    const [reviews, setReviews] = useState([]);
+    useEffect(() => {
+        // getting the review details
+        const getReview = () => {
+            axios.get(`http://localhost:8080/api/review/get-all`)
+                .then((resp) => {
+                    console.log(resp.data);
+                    setReviews(resp.data);
+                })
+        }
+        getReview();
+    }, [])
     return (
         <div>
             <Navbar />
             <div className="home-container">
-
+                {/* Home Top section */}
                 <div className="home-top">
                     <h1 className="home-title">Welcome to the Vehicle Insurance System</h1>
                     <p className="home-subtitle">Your trusted partner for securing your vehicle with the best insurance plans.</p>
                 </div>
-
+                {/*  Features of the Insurance*/}
                 <div className="features-section">
                     <div className="feature-card">
                         <h5 className="feature-title">Get a Quote</h5>
                         <p className="feature-text">Calculate your premium easily and get instant quotes tailored to your vehicle.</p>
-                        <a href="#" className="custom-btn-outline">Get Quote</a>
+                        <Link className="custom-btn-outline">Get Quote</Link>
                     </div>
                     <div className="feature-card">
                         <h5 className="feature-title">File a Claim</h5>
                         <p className="feature-text">Submit your insurance claim hassle-free with step-by-step guidance.</p>
-                        <a href="#" className="custom-btn-outline">File Claim</a>
+                        <Link className="custom-btn-outline">File Claim</Link>
                     </div>
                     <div className="feature-card">
                         <h5 className="feature-title">Contact Us</h5>
                         <p className="feature-text">Need help or have questions? Our support team is ready to assist you.</p>
-                        <a href="#" className="custom-btn-outline">Contact</a>
+                        <Link className="custom-btn-outline">Contact</Link>
                     </div>
                 </div>
-
+            {/* why choose section */}
                 <div className="why-choose-section">
                     <h2 className="section-title">Why Choose Us?</h2>
                     <ul className="benefits-list">
@@ -39,26 +54,44 @@ function Home() {
                         <li>✔️ Trusted by Thousands of Vehicle Owners</li>
                     </ul>
                 </div>
-
-                <div className="about-section">
-                    <h2 className="section-title">About Us</h2>
-                    <p className="about-text">
-                        We are committed to providing the best vehicle insurance solutions tailored to your needs. Our dedicated team ensures smooth policy processing, affordable premiums, and reliable claim settlement support.
-                    </p>
+                {/* About Us */}
+                <div className="about-section" id="about">
+                    <div className="about-image">
+                        <img src="../HomeImages/review.jpg" alt="Vehicle Insurance System" />
+                    </div>
+                    <div className="about-content">
+                        <h2 className="section-title">About Us</h2>
+                        <p>
+                            Our Vehicle Insurance System is built to deliver fast, affordable, and secure insurance services. Whether you're a car, bike, or commercial vehicle owner, we provide customized policy coverage to fit your needs.
+                        </p>
+                        <ul>
+                            <li> Quick policy approval process</li>
+                            <li> Instant premium quote calculation</li>
+                            <li> Simple claim request with damage photo upload</li>
+                            <li> Aadhaar & PAN-based secure login</li>
+                            <li> Add-on support like engine protection & roadside help</li>
+                        </ul>
+                        <p>
+                            With digital documents, timely reminders, and officer-backed claim reviews, our system ensures you stay protected with zero hassle.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="testimonials-section">
-                    <h2 className="section-title">Testimonials</h2>
-                    <div className="testimonial-card">
-                        <p>"Best insurance service ever! Quick and hassle-free claims."</p>
-                        <span>- Rahul, Bangalore</span>
-                    </div>
-                    <div className="testimonial-card">
-                        <p>"Affordable plans with excellent customer support."</p>
-                        <span>- Priya, Chennai</span>
-                    </div>
-                </div>
+                {/* Review */}
+                <div className="testimonials-section" id="review">
+                    <h2 className="section-title">Reviews</h2>
+                    {
+                        reviews.map((r) => (
 
+                            <div className="testimonial-card">
+                                <p>"{r.comments}"</p>
+                                <span>- {r.policyHolder.vehicle.customer.name}</span>
+                            </div>
+                        ))
+                    }
+
+                </div>
+                {/* Help and FAQ */}
                 <div className="faq-section">
                     <h2 className="section-title">Frequently Asked Questions</h2>
                     <div className="faq-item">

@@ -2,6 +2,7 @@ package com.springboot.vehicleInsurance.service;
 
 import org.springframework.stereotype.Service;
 
+import com.springboot.vehicleInsurance.exception.ResourceNotFoundException;
 import com.springboot.vehicleInsurance.model.Officer;
 import com.springboot.vehicleInsurance.model.User;
 import com.springboot.vehicleInsurance.repository.OfficerRepository;
@@ -38,6 +39,30 @@ public class OfficerService {
 		officer.setUser(user);
 		
 		// Save office in DB
+		return officerRepository.save(officer);
+	}
+
+
+
+
+	public Officer getOfficer(String username) {
+	
+		return officerRepository.getOfficerByUsername(username);
+	}
+
+
+
+
+	public Officer updateOfficer(int officerId, Officer newOfficer) {
+		// Get officer by id
+		Officer officer = officerRepository.findById(officerId)
+				.orElseThrow(()-> new ResourceNotFoundException("Officer Not Found"));
+		if(newOfficer.getName() != null) {
+			officer.setName(newOfficer.getName());
+		}
+		if(newOfficer.getContact() != null) {
+			officer.setContact(newOfficer.getContact());
+		}
 		return officerRepository.save(officer);
 	}
 

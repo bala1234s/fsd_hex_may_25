@@ -192,4 +192,19 @@ public class PolicyHolderController {
         return ResponseEntity.ok(updatedHolder);
     }
     
+    
+    /*
+     * Aim : Deactivate the policy
+     * Path : api/policy-holder/deactivate
+     * Method : PUT
+     * Input : PolicyHolder
+     * Response : PolicyHolder
+     * 
+     * */
+    
+    @PutMapping("/deactivate")
+    public ResponseEntity<PolicyHolder> deactivatePolicy(@RequestParam int policyHolderId) {
+        PolicyHolder updatedHolder = holderService.deactivatePolicy(policyHolderId);
+        return ResponseEntity.ok(updatedHolder);
+    }
 }

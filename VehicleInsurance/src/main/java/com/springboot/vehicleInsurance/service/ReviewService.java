@@ -53,4 +53,12 @@ public class ReviewService {
 		return reviewRepository.getReviewByPolicyId(policyId);
 	}
 
+
+
+
+	public List<Review> getAllReview() {
+		
+		return reviewRepository.findAll();
+	}
+
 }

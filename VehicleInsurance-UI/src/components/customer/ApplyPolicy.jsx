@@ -9,6 +9,7 @@ import { Dropdown } from 'primereact/dropdown';
 
 function ApplyPolicy() {
     const param = useParams();
+    // Reference Hook for stepper (prime react)
     const stepperRef = useRef(null);
 
     const [policyDetail, setPolicyDetail] = useState({});
@@ -20,6 +21,7 @@ function ApplyPolicy() {
 
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    // Naviate Hook
     let navigate = useNavigate();
 
 
@@ -41,8 +43,9 @@ function ApplyPolicy() {
             .catch(err => console.log(err));
     }, [param.pid]);
 
+    // Add addons in the array
     const handleAddOnChange = (e) => {
-        const selected = [...selectedAddOns];
+        const selected = [...selectedAddOns]; //<-- adding the selected policy to the array
         if (e.checked)
             selected.push(e.value);
         else
@@ -50,17 +53,19 @@ function ApplyPolicy() {
         setSelectedAddOns(selected);
     };
 
+    // submit the policy
     const submitPolicy = () => {
         if (!selectedVehicle || !startDate || !endDate) {
             alert("Please fill all required fields!");
             return;
         }
 
+        // get customer vehicle from the vehicle array
         const selectedVehicleObj = vehicleList.find(v => v.id === selectedVehicle);
         const customerId = selectedVehicleObj?.customer?.id;
         const vehicleId = selectedVehicle;
 
-        // Remove 'id' from each addon
+        // Remove 'id' from each addon 
         const addOnsWithoutId = selectedAddOns.map(({ id, ...rest }) => rest);
 
         const postData = {
@@ -74,6 +79,7 @@ function ApplyPolicy() {
 
         console.log("Submitting Policy Data:", postData);
 
+        // apply policy api
         axios.post(`http://localhost:8080/api/policy-holder/apply?vehicleId=${vehicleId}&policyId=${param.pid}`, postData, {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
@@ -93,7 +99,7 @@ function ApplyPolicy() {
         const start = new Date();
         const end = new Date();
         end.setFullYear(end.getFullYear() + years);
-
+        // yyyy-mm-dd
         setStartDate(start.toISOString().split("T")[0]);
         setEndDate(end.toISOString().split("T")[0]);
     };
@@ -115,7 +121,10 @@ function ApplyPolicy() {
 
                 <div className="card flex justify-content-center p-4">
 
+                    {/*Stepper Component Prime React  */}
                     <Stepper ref={stepperRef} style={{ flexBasis: '10rem' }}>
+
+                        {/* Section 1 for vehicle*/}
                         <StepperPanel header="Select Vehicle">
                             <Dropdown
                                 value={selectedVehicle}
@@ -131,6 +140,7 @@ function ApplyPolicy() {
                             </div>
                         </StepperPanel>
 
+                        {/* Section 2 for select addons */}
                         <StepperPanel header="Select Add-Ons">
                             {addOnsList.map(addon => (
                                 <div key={addon.id} className="field-checkbox">
@@ -149,6 +159,7 @@ function ApplyPolicy() {
                             </div>
                         </StepperPanel>
 
+                        {/* Section 3 for select plan by years */}
                         <StepperPanel header="Set Policy Period">
                             <div className="p-field mb-3">
                                 <label>Policy Plan:</label>

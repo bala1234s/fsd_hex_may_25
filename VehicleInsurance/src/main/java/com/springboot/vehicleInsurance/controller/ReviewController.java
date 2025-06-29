@@ -37,10 +37,34 @@ public class ReviewController {
 		return reviewService.addReview(customerId, policyId, review);
 	}
 	
+	/*
+	 * Aim : To get Review for the Policy by Policy Holder
+	 * Path : api/review/add
+	 * Method : Post
+	 * Response : Review
+	 * Input : policyHolderId and new Review
+	 * 
+	 * 
+	 * */
+	
 	@GetMapping("get/{policyId}")
 		public List<Review> getReviewByPolicyId(@PathVariable int policyId){
 			return reviewService.getReviewByPolicyId(policyId);
 		}
+	
+	/*
+	 * Aim : To get All
+	 * Path : api/review/add
+	 * Method : Post
+	 * Response : Review
+	 * Input : policyHolderId and new Review
+	 * 
+	 * 
+	 * */
+	@GetMapping("get-all")
+	public List<Review> getAllReview(){
+		return reviewService.getAllReview();
+	}
 }
 
 

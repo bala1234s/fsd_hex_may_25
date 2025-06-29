@@ -2,6 +2,7 @@ package com.springboot.vehicleInsurance.model;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -99,17 +100,7 @@ public class Customer {
 	}
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((dob == null) ? 0 : dob.hashCode());
-		result = prime * result + ((contact == null) ? 0 : contact.hashCode());
-		result = prime * result + age;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
-		result = prime * result + ((aadharNumber == null) ? 0 : aadharNumber.hashCode());
-		result = prime * result + ((panNumber == null) ? 0 : panNumber.hashCode());
-		return result;
+		return Objects.hash(aadharNumber, address, age, contact, dob, id, name, panNumber);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -120,44 +111,10 @@ public class Customer {
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (dob == null) {
-			if (other.dob != null)
-				return false;
-		} else if (!dob.equals(other.dob))
-			return false;
-		if (contact == null) {
-			if (other.contact != null)
-				return false;
-		} else if (!contact.equals(other.contact))
-			return false;
-		if (age != other.age)
-			return false;
-		if (address == null) {
-			if (other.address != null)
-				return false;
-		} else if (!address.equals(other.address))
-			return false;
-		if (aadharNumber == null) {
-			if (other.aadharNumber != null)
-				return false;
-		} else if (!aadharNumber.equals(other.aadharNumber))
-			return false;
-		if (panNumber == null) {
-			if (other.panNumber != null)
-				return false;
-		} else if (!panNumber.equals(other.panNumber))
-			return false;
-		return true;
+		return Objects.equals(aadharNumber, other.aadharNumber) && Objects.equals(address, other.address)
+				&& age == other.age && Objects.equals(contact, other.contact) && Objects.equals(dob, other.dob)
+				&& id == other.id && Objects.equals(name, other.name) && Objects.equals(panNumber, other.panNumber);
 	}
-	
-	
 	
 	
 

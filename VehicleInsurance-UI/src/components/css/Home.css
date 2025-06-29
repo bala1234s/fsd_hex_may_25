@@ -131,11 +131,48 @@
     background: rgba(0, 123, 255, 0.15);
 }
 
-.about-section,
+
 .testimonials-section,
 .faq-section {
     margin: 50px 0;
     text-align: center;
+}
+
+.about-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem;
+    flex-wrap: wrap;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-image {
+    width: 45%;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.about-content {
+    width: 50%;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.about-content ul {
+    padding-left: 1.2rem;
+    margin-top: 1rem;
+}
+
+.about-content ul li {
+    margin-bottom: 0.5rem;
 }
 
 .about-text {

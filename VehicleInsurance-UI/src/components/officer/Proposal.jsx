@@ -12,7 +12,7 @@ import { Dropdown } from 'primereact/dropdown';
 import '../css/Proposal.css';
 
 function Proposal() {
-    // State to hold all proposals
+    // store all proposals
     const [proposals, setProposals] = useState([]);
 
     // Dialog control
@@ -55,7 +55,8 @@ function Proposal() {
         const colors = {
             'CLAIMED': 'success',
             'PENDING': 'warning',
-            'QUOTE GENERATED': 'info'
+            'QUOTE GENERATED': 'info',
+            'PAID': 'success'
         };
         return <Tag value={status} severity={colors[status] || null} />;
     };
@@ -112,7 +113,7 @@ function Proposal() {
                     setGlobalFilterValue(value);
                     setFilters({ ...filters, global: { value, matchMode: 'contains' } });
                 }}
-                style={{ marginBottom: '1rem' }}
+                style={{ marginBottom: '1rem',marginLeft:'30%',width:'40rem',color:'black' }}
             />
 
             {/* DataTable to show proposals */}
@@ -122,6 +123,7 @@ function Proposal() {
                 rows={5}
                 dataKey="id"
                 filters={filters}
+                className='proposal-header'
                 globalFilterFields={['customerName', 'customerContact', 'vehicleType', 'vehicleModel', 'policyName']}
                 emptyMessage="No proposals found"
             >
@@ -151,9 +153,10 @@ function Proposal() {
                     header="Status"
                     body={(row) => getStatusTag(row.status)}
                     filter
-                    showFilterMenu={false}
+                    showFilterMenu={true}
                     filterElement={statusRowFilterTemplate}
-                    sortable
+                    // sortable 
+                    style={{color:'white'}}
                 />
 
 
@@ -168,7 +171,7 @@ function Proposal() {
             </DataTable>
 
             {/* Dialog box for Quote Details */}
-            <Dialog header="Quote Details" visible={visible} style={{ width: '40vw' }} onHide={() => setVisible(false)}>
+            <Dialog header="Details" visible={visible} style={{ width: '40vw' }} onHide={() => setVisible(false)} >
                 {selectedProposal && (
                     <div style={{ color: 'black' }}>
                         <h4>{selectedProposal.customerName}</h4>
@@ -193,7 +196,12 @@ function Proposal() {
                             {selectedProposal.policyPrice +
                                 selectedProposal.addOns.reduce((sum, addon) => sum + addon.price, 0)}
                         </p>
-                        <Button label="Send Quote" className='p-button-success' onClick={sendQuote} />
+                        { 
+                            selectedProposal.status == "PENDING" ?
+                                <Button label="Send Quote" className='p-button-success' onClick={sendQuote} />
+                                : ""
+                        }
+                        
                     </div>
                 )}
             </Dialog>

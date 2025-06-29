@@ -68,6 +68,7 @@ public class PaymentServiceTest {
 	public void close() {
 		payment = null;
 		quote = null;
+		System.out.println("Payment and Quote is empty");
 	}
 
 }

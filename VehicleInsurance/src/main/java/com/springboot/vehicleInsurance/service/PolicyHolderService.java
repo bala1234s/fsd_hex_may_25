@@ -252,6 +252,25 @@ public class PolicyHolderService {
 
 
 
+	public PolicyHolder deactivatePolicy(int policyHolderId) {
+		PolicyHolder holder = holderRepository.findById(policyHolderId)
+	            .orElseThrow(() -> new RuntimeException("Policy Holder Not Found"));
+
+	    Payment payment = paymentService.getPaymentByHolderId(policyHolderId);
+	    if (payment == null) {
+	        throw new PaymentNotFoundException("Payment is not complete yet!!!");
+	    }
+
+	    holder.setActive(false);
+	    holder.setStatus("APPROVED");
+
+	    return holderRepository.save(holder); 
+	}
+
+
+
+
+
 
 
 }

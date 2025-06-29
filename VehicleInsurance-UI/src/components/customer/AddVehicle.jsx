@@ -4,12 +4,12 @@ import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import axios from "axios";
 
-function AddVehicle({ visible, setVisible, customerId }) {
+function AddVehicle({ visible, setVisible, customerId }) { // <-- props , getting the values inside the obj
     // const [visible, setVisible] = useState(false);
 
     console.log("Add vehcile Component");
     console.log("Customer ID:", customerId);
-
+    // Add vehicle method
     const handleAddVehicle = (event) => {
         event.preventDefault();
         let vehicle = event.target;
@@ -21,7 +21,7 @@ function AddVehicle({ visible, setVisible, customerId }) {
             'vehicleValue': vehicle.vehicleValue.value,
             'purchaseDate': vehicle.purchaseDate.value,
         }
-        
+        // add vehicle API
         axios.post(`http://localhost:8080/api/vehicle/add/${customerId}`, vehicleObj, {
             headers: { 'Authorization': 'Bearer ' +localStorage.getItem('token')}
         })
@@ -34,16 +34,15 @@ function AddVehicle({ visible, setVisible, customerId }) {
                 
             })
 
-
-
     }
-    
     
     return (
         <div className="card flex justify-content-center">
             <Button label="Show" icon="pi pi-external-link" onClick={() => setVisible(true)} />
+            {/* Prime React Dialog */}
             <Dialog header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                <form action="" onSubmit={handleAddVehicle}>
+                {/* Vehicle Register Form */}
+                 <form action="" onSubmit={handleAddVehicle}>
                     <div className="mb-3">
                         <label htmlFor="vehicleType" className="form-label">Vehicle Type</label>
                         <input type="text" className="form-control" id="vehicleType" placeholder="Enter vehicle type" />
@@ -74,4 +73,4 @@ function AddVehicle({ visible, setVisible, customerId }) {
 }
 
 
-export default AddVehicle
+export default AddVehicle;

@@ -7,12 +7,15 @@ import { Toast } from 'primereact/toast';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Button } from 'primereact/button';
 import '../css/MyInsurance.css';
+import ShowPolicyDetails from "./ShowPolicyDetails";
 
 function MyInsurance() {
     const [insurances, setInsurances] = useState([]);
     const [showDialog, setShowDialog] = useState(false);
     const [selectedPolicy, setSelectedPolicy] = useState(null);
+    const [selectedPolicyHolderId, setselectedPolicyHolderId] = useState(undefined);
     const [quoteDetails, setQuoteDetails] = useState({});
+    const [visible, setVisible] = useState(false);
     const [payment, setPayment] = useState(0);
     const toast = useRef(null);
 
@@ -27,7 +30,7 @@ function MyInsurance() {
 
     // Fetch quote details when dialog opens
     useEffect(() => {
-        if (showDialog && selectedPolicy) {
+        if (showDialog && selectedPolicy) { //<-- if i click the Get Quote Button
             axios.get(`http://localhost:8080/api/quote/get-one/${selectedPolicy.id}`, {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
             }).then(res => {
@@ -53,6 +56,7 @@ function MyInsurance() {
         console.log(payment + " " + quoteDetails.total);
 
         if (payment == quoteDetails.total) {
+            // payment API
             axios.post(`http://localhost:8080/api/payment/pay/${selectedPolicy.id}`, paymentObj, {
                 headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
             }).then(() => {
@@ -63,10 +67,11 @@ function MyInsurance() {
                     life: 3000
                 });
                 fetchInsuranceList();   // Refresh data
-                setVisible(false);  // Close dialog
+                // Close dialog
+                setShowDialog(false)
             }).catch((err) => {
-               console.log(err);
-                
+                console.log(err);
+
             });
         } else {
             toast.current.show({
@@ -99,46 +104,73 @@ function MyInsurance() {
 
     // Status column content
     const statusTemplate = (policy) => {
-        if (policy.status === "QUOTE GENERATED") {
+        const status = policy.status;
+
+        if (status === "QUOTE GENERATED") {
             return (
                 <div className="text-center">
-                    <span className="badge bg-warning text-dark">QUOTE GENERATED</span>
                     <Button label="View Quote" className="mt-2" onClick={() => handleViewQuote(policy)} />
                 </div>
             );
         }
+
+        if (status === "APPROVED" || status === "CLAIMED") {
+            console.log(policy.id);
+
+            return (
+                <div className="text-center">
+                    <Button
+                        label="View Policy"
+                        className="mt-2"
+                        onClick={() => {
+                            setselectedPolicyHolderId(policy.id);
+                            setVisible(true);
+                        }}
+                    />
+
+                </div>
+            );
+        }
+
         return (
+
             <span className={`badge ${policy.active ? 'bg-success' : 'bg-danger'}`}>
                 {policy.active ? "Active" : "Inactive"}
             </span>
         );
     };
 
+
+
     return (
         <div className="mt-4 ml-5" style={{ width: '90rem' }}>
             <h2 className="text-center text-primary mb-4">My Insurance Policies</h2>
 
-            <DataTable value={insurances} tableStyle={{ width: '120rem', tableLayout: 'auto', padding: '1rem' }} paginator rows={5} scrollable scrollHeight="400px">
+            <DataTable value={insurances} tableStyle={{ width: '150rem', tableLayout: 'auto', padding: '1rem' }} paginator rows={5} scrollable scrollHeight="400px" className="custom-header">
                 <Column header="Policy Name" body={(row) => row.policy.policyName} />
                 <Column field="status" header="Status" />
-                <Column field="startDate" header="Start Date" />    
+                <Column field="startDate" header="Start Date" />
                 <Column field="endDate" header="End Date" />
                 <Column header="Vehicle Type" body={(row) => row.vehicle.vehicleType} />
-                <Column header="Model" body={(row) => row.vehicle.vehicleModel } />
-                <Column header="Reg No" body={(row) => row.vehicle.registrationNumber } />
-                <Column header="Vehicle Value" body={(row) =>   `₹${row.vehicle.vehicleValue}` } />
-                <Column header="Policy Type" body={(row) => row.policy.policyType } />
-                <Column header="Description" body={(row) => row.policy.description} />
-                <Column header="Price" body={(row) =>   `₹${row.policy.price}` } />
-                <Column header="Created" body={(row) => row.policy.createdDate } />
+                <Column header="Model" body={(row) => row.vehicle.vehicleModel} />
+                <Column header="Reg No" body={(row) => row.vehicle.registrationNumber} />
+                <Column header="Vehicle Value" body={(row) => `₹${row.vehicle.vehicleValue}`} />
+                <Column header="Policy Type" body={(row) => row.policy.policyType} />
+                <Column header="Description" style={{ width: '30rem' }} body={(row) => row.policy.description} />
+                <Column header="Price" body={(row) => `₹${row.policy.price}`} />
+                <Column header="Created" body={(row) => row.policy.createdDate} />
                 <Column header="Active Status" body={statusTemplate} />
+
             </DataTable>
+
+
 
             {/* Toast for messages */}
             <Toast ref={toast} />
             <ConfirmDialog />
 
             {/* Payment Dialog */}
+
             <Dialog header="Quote Details" visible={showDialog} onHide={() => setShowDialog(false)} style={{ width: '40vw' }}>
                 {selectedPolicy && (
                     <div style={{ color: 'black' }}>
@@ -152,7 +184,7 @@ function MyInsurance() {
                             type="number"
                             className="form-control my-2"
                             placeholder="Enter payment amount"
-                            value={payment  }
+                            value={payment}
                             onChange={(e) => setPayment(e.target.value)}
                         />
 
@@ -160,6 +192,13 @@ function MyInsurance() {
                     </div>
                 )}
             </Dialog>
+
+
+            <Dialog visible={visible} onHide={() => setVisible(false)} style={{ width: '40vw' }} header="Policy Details">
+             
+                {<ShowPolicyDetails policyHolderId={selectedPolicyHolderId} />}
+            </Dialog>
+
         </div>
     );
 }

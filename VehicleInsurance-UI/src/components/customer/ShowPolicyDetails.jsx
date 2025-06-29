@@ -4,10 +4,12 @@ import { getPolicyHolderByIdWithAddons } from "../../state/actions/GetPolicyHold
 
 import { Tag } from 'primereact/tag';
 
-
+// This component for Display the Policy Details after Approval
 function ShowPolicyDetails({ policyHolderId }) {
     const dispatch = useDispatch();
-
+    console.log(policyHolderId);
+    
+    // Redux
     const policyDetails = useSelector(state => state.policyHolderDetails.policyHolderDetails);
 
     useEffect(() => {

@@ -7,6 +7,7 @@ import axios from "axios";
 
 function AddOnsDetails() {
     const dispatch = useDispatch();
+    // redux
     const [addOns, setAddOns] = useState(useSelector(state => state.allAddOns.allAddOns));
 
     const [visible, setVisible] = useState(false);
@@ -18,16 +19,18 @@ function AddOnsDetails() {
     const [price, setPrice] = useState("");
 
     const token = localStorage.getItem("token");
+    // pagination , each page will display 2 items
     const itemsPerPage = 2;
     const [page, setPage] = useState(0);
     const paginatedAddOns = addOns.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
 
     useEffect(() => {
-        fetchAllAddons(dispatch);
+        fetchAllAddons(dispatch); //<-- redux api to get the addons
     }, [dispatch]);
 
     const addAddOn = () => {
         const data = { name, description, price };
+        // Post Addons API
         axios.post("http://localhost:8080/api/addons/details/add", data, {
             headers: { Authorization: "Bearer " + token }
         }).then((resp) => {
@@ -42,6 +45,7 @@ function AddOnsDetails() {
     };
 
     const updateAddOn = () => {
+        // Edit or update Addons API
         axios.put(`http://localhost:8080/api/addons/details/update/${selectedAddOn.id}`, selectedAddOn, {
             headers: { Authorization: "Bearer " + token }
         }).then(resp => {
@@ -51,6 +55,7 @@ function AddOnsDetails() {
     };
 
     const deleteAddOn = (id) => {
+        //delete Addons API
         axios.delete(`http://localhost:8080/api/addons/details/delete/${id}`, {
             headers: { Authorization: "Bearer " + token }
         }).then(() => {
@@ -68,8 +73,9 @@ function AddOnsDetails() {
                 </div>
             </div>
 
-            <div className="row mt-4" style={{ display: 'flex', gap: '20px',flexDirection:'row' }}>
-                {paginatedAddOns.map((addon) => (
+            <div className="row-md-12 mt-4" style={{ display: 'flex', gap: '20px',flexDirection:'row' }}>
+                {
+                    paginatedAddOns.map((addon) => (
                     <div className="col-sm-6" key={addon.id}>
                         <div className="card">
                             <div className="card-body">
@@ -105,7 +111,7 @@ function AddOnsDetails() {
                     <label>Price</label>
                     <input type="number" className="form-control" onChange={e => setPrice(e.target.value)} />
                 </div>
-                <Button label="Add Add-On" className="btn btn-primary" onClick={addAddOn} />
+                <Button label="Add Add-On" className="btn btn-primary" onClick={()=>addAddOn()} />
             </Dialog>
 
             {/* Edit Dialog */}
@@ -114,17 +120,17 @@ function AddOnsDetails() {
                     <div>
                         <div className="mb-3">
                             <label>Name</label>
-                            <input className="form-control" value={selectedAddOn.name} onChange={e => setSelectedAddOn({ ...selectedAddOn, name: e.target.value })} />
+                            <input className="form-control" value={selectedAddOn.name} onChange={$e => setSelectedAddOn({ ...selectedAddOn, name: $e.target.value })} />
                         </div>
                         <div className="mb-3">
                             <label>Description</label>
-                            <textarea className="form-control" value={selectedAddOn.description} onChange={e => setSelectedAddOn({ ...selectedAddOn, description: e.target.value })} />
+                            <textarea className="form-control" value={selectedAddOn.description} onChange={$e => setSelectedAddOn({ ...selectedAddOn, description: $e.target.value })} />
                         </div>
                         <div className="mb-3">
                             <label>Price</label>
-                            <input type="number" className="form-control" value={selectedAddOn.price} onChange={e => setSelectedAddOn({ ...selectedAddOn, price: e.target.value })} />
+                            <input type="number" className="form-control" value={selectedAddOn.price} onChange={$e => setSelectedAddOn({ ...selectedAddOn, price: $e.target.value })} />
                         </div>
-                        <Button label="Update Add-On" className="btn btn-primary" onClick={updateAddOn} />
+                        <Button label="Update Add-On" className="btn btn-primary" onClick={()=>updateAddOn()} />
                     </div>
                 )}
             </Dialog>

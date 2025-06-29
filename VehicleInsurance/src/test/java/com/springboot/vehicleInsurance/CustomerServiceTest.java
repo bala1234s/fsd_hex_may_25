@@ -1,32 +1,36 @@
 package com.springboot.vehicleInsurance;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+import com.springboot.vehicleInsurance.model.Customer;
+import com.springboot.vehicleInsurance.repository.CustomerRepository;
+import com.springboot.vehicleInsurance.service.CustomerService;
+import com.springboot.vehicleInsurance.exception.CustomerNotFoundException;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import com.springboot.vehicleInsurance.model.Customer;
-import com.springboot.vehicleInsurance.repository.CustomerRepository;
-import com.springboot.vehicleInsurance.service.CustomerService;
 
 @SpringBootTest
 public class CustomerServiceTest {
-	
-	@InjectMocks
-	private CustomerService customerService;
-	@Mock
-	private CustomerRepository customerRepository;
-	
-	private Customer customer;
-	
-	@BeforeEach
+
+    @InjectMocks
+    private CustomerService customerService;
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    private Customer customer;
+
+    @BeforeEach
     public void init() {
         customer = new Customer();
         customer.setId(1);
@@ -47,11 +51,20 @@ public class CustomerServiceTest {
         assertEquals(customer, result);
     }
 
-	
-	public void afterEach() {
-		customer = null;
-		System.out.println("Customer is null");
-		
-	}
-	
+    @Test
+    public void checkCustomerNotFound() {
+        int invalidId = 99;
+
+        when(customerRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        assertThrows(CustomerNotFoundException.class, () -> {
+            customerService.getById(invalidId);
+        });
+    }
+
+    @AfterEach
+    public void afterEach() {
+        customer = null;
+        System.out.println("Customer is null");
+    }
 }

@@ -34,6 +34,7 @@ function OfficerHome() {
                     policyNameCounts[policyName] = (policyNameCounts[policyName] || 0) + 1;
                 });
 
+                // setting the Status values for the chart
                 setStatusData({
                     labels: Object.keys(statusCounts),
                     datasets: [
@@ -45,6 +46,7 @@ function OfficerHome() {
                     ]
                 });
 
+                // setting the policy details for the chart
                 setPolicyCountData({
                     labels: Object.keys(policyNameCounts),
                     datasets: [
@@ -65,13 +67,15 @@ function OfficerHome() {
             <h2 className="mb-4 text-primary text-center">Welcome Officer Dashboard</h2>
 
             <div className="row mb-5">
-                <div className="col-md-6">
+                <div className="col-md-7">
                     <h5 className="text-secondary">Policy Status Overview</h5>
-                    <Chart type="bar" data={statusData} />
+                    {/* Bar chart for Status */}
+                    <Chart type="bar" data={statusData} /> 
                 </div>
 
-                <div className="col-md-6">
+                <div className="col-md-5">
                     <h5 className="text-secondary">Number of Customers per Policy</h5>
+                    {/* Doughnut chart for policy taken */}
                     <Chart type="doughnut" data={policyCountData} style={{height:'20rem'}}/>
                 </div>
 
@@ -80,7 +84,7 @@ function OfficerHome() {
             <div className="row">
                 {proposals.map((item, index) => (
                     <div className="col-md-6 mb-4" key={index}>
-                        <Card
+                        <Card // <-- prime react Cart Component
                             title={item.holder.vehicle.customer.name}
                             subTitle={`Status: ${item.holder.status}`}
                         >

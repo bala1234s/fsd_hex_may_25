@@ -13,6 +13,7 @@ function CustomerHome() {
     const [comments, setComments] = useState("");
     const [rating, setRating] = useState(0);
     useEffect(() => {
+        //  get policy holder API
         axios.get("http://localhost:8080/api/policy-holder/get", {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
@@ -20,7 +21,7 @@ function CustomerHome() {
                 console.log(res.data);
 
                 setInsurance(res.data);
-
+                // getting vehicles from the array
                 const allVehicles = res.data.map(item => item.vehicle);
                 setVehicles(allVehicles);
             })
@@ -33,6 +34,7 @@ function CustomerHome() {
             'rating': rating
         }
        
+        // Add review API
         axios.post(`http://localhost:8080/api/review/add/${customerId}/${policyId}`, reviewObj, {
             headers: { 'Authorization': 'Bearer ' + token }
         }).then((resp) => {

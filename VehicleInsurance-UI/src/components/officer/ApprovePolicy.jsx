@@ -41,6 +41,7 @@ function ApprovePolicy() {
     }, []);
 
     // Map API response to a cleaner object
+    // making structure for reusage
     const mapToPaymentObject = (payment) => ({
         id: payment.id,
         paidDate: payment.paidDate,
@@ -84,7 +85,8 @@ function ApprovePolicy() {
             message: 'Are you sure you want to activate this policy?',
             header: 'Confirm',
             icon: 'pi pi-exclamation-triangle',
-            accept: () => {
+
+            accept: () => { //<-- if i give 'yes'
                 axios.put(`http://localhost:8080/api/policy-holder/approve?policyHolderId=${policyHolderId}`, {}, {
                     headers: { Authorization: 'Bearer ' + token }
                 })
@@ -101,14 +103,37 @@ function ApprovePolicy() {
         });
     };
 
+    // Deactivate policy
+    const deactivatePolicy = (policyHolderId) => {
+        confirmDialog({
+            message: 'Are you sure you want to activate this policy?',
+            header: 'Confirm',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => { //<-- if i give 'yes'
+                axios.put(`http://localhost:8080/api/policy-holder/deactivate?policyHolderId=${policyHolderId}`, {}, {
+                    headers: { Authorization: 'Bearer ' + token }
+                })
+                    .then(() => {
+                        toast.current.show({ severity: 'success', summary: 'Success', detail: 'Policy Deactivate' });
+                        fetchPayments();      // Refresh list
+                        setShowDialog(false); // Close details popup
+                    })
+                    .catch((error) => {
+                        console.log("Deactivation error:", error);
+                        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Could not deactivate policy' });
+                    });
+            }
+        });
+    };
+
     return (
         <div className="card" style={{ padding: '1rem', margin: 'auto', width: '90%' }}>
             <h3 className="text-center">Approved Payments</h3>
 
             <Toast ref={toast} />
             <ConfirmDialog />
-
-            <DataTable value={payments} paginator rows={5} emptyMessage="No payments found">
+            {/* Table to display the Policy details */}
+            <DataTable value={payments} paginator rows={4} emptyMessage="No payments found" className='approve-header'>
                 <Column header="Customer" body={(row) => (
                     <div>
                         <strong>{row.customerName}</strong><br />
@@ -162,7 +187,7 @@ function ApprovePolicy() {
 
                         {selectedPayment.active === true ? (
                             <p>
-                                <button className='btn btn-danger' onClick={() => activatePolicy(selectedPayment.policyHolderId)}>
+                                <button className='btn btn-danger' onClick={() => deactivatePolicy(selectedPayment.policyHolderId)}>
                                     Deactivate Policy
                                 </button>
                             </p>

@@ -18,6 +18,7 @@ import AllPolicyDetails from "./components/officer/AllPolicyDetails"
 import ClaimPolicy from "./components/customer/ClaimPolicy"
 import ClaimApproval from "./components/officer/ClaimApproval"
 import AddOnsDetails from "./components/officer/AddOnsDetails"
+import OfficerProfile from './components/officer/OfficerProfile'
 
 
 
@@ -48,6 +49,7 @@ function App() {
           <Route path="policy-details" element={<AllPolicyDetails />}></Route>
           <Route path="claim-approval" element={<ClaimApproval />}></Route>
           <Route path="addons" element={<AddOnsDetails />}></Route>
+          <Route path="officer-profile" element={<OfficerProfile />}></Route>
         </Route>
       </Routes>
 

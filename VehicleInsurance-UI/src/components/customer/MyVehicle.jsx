@@ -39,13 +39,16 @@ function MyVehicle() {
                 console.log(err);
             });
     };
+
     useEffect(() => {
 
-        getCustomerAndVehicle();
+        getCustomerAndVehicle(); //<--- get the customer an vehicle in the fetch API
     }, []);
 
+
+    // making the cuatomer in the 
     const customerNameBodyTemplate = (rowData) => {
-        return rowData.customer ? rowData.customer.name : "N/A";
+        return rowData.customer ;
     };
 
     const editVehicle = (vehicle) => {
@@ -69,6 +72,7 @@ function MyVehicle() {
     };
 
     const updateVehicle = () => {
+        /// update the vehicle API
         axios.put(`http://localhost:8080/api/vehicle/update/${selectedVehicle.id}`, selectedVehicle, {
             headers: { 'Authorization': 'Bearer ' + token }
         }).then(resp => {
@@ -95,9 +99,9 @@ function MyVehicle() {
                         }
                     </div>
 
-
-                    <DataTable value={vehicle} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '60rem' }} className="vehicle-header">
-                        <Column field="id" header="Vehicle ID" style={{ width: '10%' }}></Column>
+                    {/* Table prime react */}
+                    <DataTable value={vehicle} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} className="vehicle-header">
+                        <Column header="#" body={(data, index) => index.rowIndex + 1}></Column>
                         <Column field="vehicleType" header="Type" style={{ width: '15%' }}></Column>
                         <Column field="vehicleModel" header="Model" style={{ width: '15%' }}></Column>
                         <Column field="registrationNumber" header="Reg. Number" style={{ width: '20%' }}></Column>
@@ -127,6 +131,8 @@ function MyVehicle() {
 
                 </div>
             </div>
+
+            {/* Dialog prime react */}
             <Dialog header="Edit Vehicle" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                 {selectedVehicle && (
                     <div className="p-fluid">
@@ -136,7 +142,7 @@ function MyVehicle() {
                                 type="text"
                                 className="form-control"
                                 value={selectedVehicle.vehicleType}
-                                onChange={(e) => setSelectedVehicle({ ...selectedVehicle, vehicleType: e.target.value })}
+                                onChange={($e) => setSelectedVehicle({ ...selectedVehicle, vehicleType: $e.target.value })}
                             />
                         </div>
                         <div className="field">
@@ -145,7 +151,7 @@ function MyVehicle() {
                                 type="text"
                                 className="form-control"
                                 value={selectedVehicle.vehicleModel}
-                                onChange={(e) => setSelectedVehicle({ ...selectedVehicle, vehicleModel: e.target.value })}
+                                onChange={($e) => setSelectedVehicle({ ...selectedVehicle, vehicleModel: $e.target.value })}
                             />
                         </div>
                         <div className="field">
@@ -154,7 +160,7 @@ function MyVehicle() {
                                 type="text"
                                 className="form-control"
                                 value={selectedVehicle.registrationNumber}
-                                onChange={(e) => setSelectedVehicle({ ...selectedVehicle, registrationNumber: e.target.value })}
+                                onChange={($e) => setSelectedVehicle({ ...selectedVehicle, registrationNumber: $e.target.value })}
                             />
                         </div>
                         <div className="field">
@@ -163,7 +169,7 @@ function MyVehicle() {
                                 type="number"
                                 className="form-control"
                                 value={selectedVehicle.vehicleValue}
-                                onChange={(e) => setSelectedVehicle({ ...selectedVehicle, vehicleValue: e.target.value })}
+                                onChange={($e) => setSelectedVehicle({ ...selectedVehicle, vehicleValue: $e.target.value })}
                             />
                         </div>
                         <div className="field">
@@ -172,7 +178,7 @@ function MyVehicle() {
                                 type="date"
                                 className="form-control"
                                 value={selectedVehicle.purchaseDate}
-                                onChange={(e) => setSelectedVehicle({ ...selectedVehicle, purchaseDate: e.target.value })}
+                                onChange={($e) => setSelectedVehicle({ ...selectedVehicle, purchaseDate: $e.target.value })}
                             />
                         </div>
 
@@ -180,7 +186,7 @@ function MyVehicle() {
                             label="Update Vehicle"
                             icon="pi pi-check"
                             className="mt-3"
-                            onClick={updateVehicle}
+                            onClick={()=>updateVehicle()}
                         />
                     </div>
                 )}
