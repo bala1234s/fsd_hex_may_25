@@ -40,7 +40,10 @@ function CustomerHome() {
         }).then((resp) => {
             alert('Review Added');
             setVisible(false);
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            console.log(err)
+            alert('Something wrong', err.message)
+        })
     }
 
     return (

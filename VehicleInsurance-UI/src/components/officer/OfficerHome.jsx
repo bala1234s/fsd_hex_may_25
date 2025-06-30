@@ -82,9 +82,10 @@ function OfficerHome() {
             </div>
 
             <div className="row">
+                <h3>Customer Info</h3>
                 {proposals.map((item, index) => (
                     <div className="col-md-6 mb-4" key={index}>
-                        <Card // <-- prime react Cart Component
+                        <div className="card p-3" // <-- prime react Cart Component
                             title={item.holder.vehicle.customer.name}
                             subTitle={`Status: ${item.holder.status}`}
                         >
@@ -102,7 +103,7 @@ function OfficerHome() {
                                     ))}
                                 </ul>
                             </div>
-                        </Card>
+                        </div>
                     </div>
                 ))}
 

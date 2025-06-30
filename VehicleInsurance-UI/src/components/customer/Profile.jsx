@@ -8,6 +8,8 @@ function Profile() {
     let [profile, setProfile] = useState({});
     let [visible, setVisible] = useState(false);
     let [profilePic, setProfilePic] = useState("");
+    let [aadharDoc, setAadharDoc] = useState("");
+    let [panDoc, setPanDoc] = useState("");
 
     // Token 
     let token = localStorage.getItem('token');
@@ -52,36 +54,72 @@ function Profile() {
     }
 
     // edit the profile 
-    const editProfile = (event) => {
-        event.preventDefault();
-        let formProfile = event.target;
-        console.log(profile.id);
+    const editProfile = async (event) => {
+        event.preventDefault(); // 
+        const form = event.target;
 
-        let updatedProfile = {
-            'name': formProfile.name.value,
-            'contact': formProfile.contact.value,
-            'address': formProfile.address.value,
-            'dob': formProfile.dob.value,
-            'panNumber': formProfile.panNumber.value,
-            'addharNumber': formProfile.aadharNumber.value
-        }
-        console.log(updatedProfile);
-        uploadImage();
-        // Update profile using axios
-        axios.put(`http://localhost:8080/api/customer/update/${profile.id}`, updatedProfile, {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
-        }).then((resp) => {
-            console.log("Updated :" + resp.data);
+        const updatedProfile = {
+            name: form.name.value,
+            contact: form.contact.value,
+            address: form.address.value,
+            dob: form.dob.value,
+            panNumber: form.panNumber.value,
+            aadharNumber: form.aadharNumber.value 
+        };
+
+        try {
+            // Only upload if a file is selected
+            if (profilePic && typeof profilePic !== "string") {
+                const formData = new FormData();
+                formData.append('file', profilePic);
+
+                const uploadResp = await axios.post(
+                    `http://localhost:8080/api/customer/upload/profile-pic/${profile.id}`,
+                    formData,
+                    { headers: { 'Authorization': 'Bearer ' + token } }
+                );
+                updatedProfile.profilePic = uploadResp.data.profilePic;
+            }
+            if (aadharDoc && typeof aadharDoc !== "string") {
+                const formData = new FormData();
+                formData.append('file', aadharDoc);
+
+                const uploadResp = await axios.post(
+                    `http://localhost:8080/api/customer/upload/aadhar/${profile.id}`,
+                    formData,
+                    { headers: { 'Authorization': 'Bearer ' + token } }
+                );
+                updatedProfile.profilePic = uploadResp.data.profilePic;
+            }
+            if (panDoc && typeof panDoc !== "string") {
+                const formData = new FormData();
+                formData.append('file', panDoc);
+
+                const uploadResp = await axios.post(
+                    `http://localhost:8080/api/customer/upload/pan/${profile.id}`,
+                    formData,
+                    { headers: { 'Authorization': 'Bearer ' + token } }
+                );
+                updatedProfile.profilePic = uploadResp.data.profilePic;
+            }
+
+            const updateResp = await axios.put(
+                `http://localhost:8080/api/customer/update/${profile.id}`,
+                updatedProfile,
+                { headers: { 'Authorization': 'Bearer ' + token } }
+            );
+
+            setProfile(updateResp.data);
+            setProfilePic(updateResp.data.profilePic);
             setVisible(false);
-            setProfile(resp.data);
-            setProfilePic(resp.data.profilePic);
-        }).catch((err) => {
-            console.log(err);
+            alert('Profile updated successfully');
 
-        })
-
-
-    }
+        } catch (error) {
+            console.log("Update error:", error);
+            alert('Error updating profile');
+        }
+    };
+    
     return (
         <div className="container">
             <div className="row">
@@ -124,17 +162,27 @@ function Profile() {
                                     </div>
                                     <div className="col-md-6">
                                         <label className="form-label">Upload Profile</label>
-                                        <input type="file" className="form-control" onChange={($e) => setProfilePic($e.target.files[0])} />
+                                        <input type="file" className="form-control"  onChange={($e) => setProfilePic($e.target.files[0])} />
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <label className="form-label">Upload Aadhar</label>
+                                        <input type="file" className="form-control" onChange={($e) => setAadharDoc($e.target.files[0])} />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label className="form-label">Upload Pan</label>
+                                        <input type="file" className="form-control" onChange={($e) => setPanDoc($e.target.files[0])} />
                                     </div>
                                     <div>
                                         <button className="btn btn-primary" type="submit" >Save Changes</button>
                                     </div>
                                 </form>
+
                             </Dialog>
                         </div>
 
                         <div className="card-body">
-                            <strong>Profile Pic</strong>
+                            <strong>Profile Pic</strong> 
                             {/* Display the Profile Details */}
                             <img src={`../ProfilePic/${profile.profilePic}`} alt="Profile" class="img-thumbnail" style={{
                                 height:'200px', width:'200px',borderRadius:'50%'
@@ -147,6 +195,18 @@ function Profile() {
                             <p className="form-control"><strong>Age </strong>{profile.age}</p>
                             <p className="form-control"><strong>Pan Number </strong>{profile.panNumber}</p>
                             <p className="form-control"><strong>Aadhar Number </strong>{profile.aadharNumber}</p>
+                            <iframe
+                                src={`../PanDoc/${profile.panDoc}`}
+                                width="100%"
+                                height="400px"
+                                title="PDF Viewer"
+                            />
+                            <iframe
+                                src={`../AadharDoc/${profile.aadharDoc}`}
+                                width="100%"
+                                height="400px"
+                                title="PDF Viewer"
+                            />
                         </div>
                     </div>
                 </div>

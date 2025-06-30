@@ -25,6 +25,8 @@ public class Customer {
 	private String aadharNumber;
 	private String panNumber;
 	private String profilePic;
+	private String aadharDoc;
+	private String panDoc;
 	@OneToOne
 	private User user;
 	public User getUser() {
@@ -97,6 +99,19 @@ public class Customer {
 	}
 	public void setPanNumber(String panNumber) {
 		this.panNumber = panNumber;
+	}
+	
+	public String getAadharDoc() {
+		return aadharDoc;
+	}
+	public void setAadharDoc(String aadharDoc) {
+		this.aadharDoc = aadharDoc;
+	}
+	public String getPanDoc() {
+		return panDoc;
+	}
+	public void setPanDoc(String panDoc) {
+		this.panDoc = panDoc;
 	}
 	@Override
 	public int hashCode() {

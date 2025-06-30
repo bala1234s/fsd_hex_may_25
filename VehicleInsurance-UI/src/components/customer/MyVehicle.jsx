@@ -48,7 +48,7 @@ function MyVehicle() {
 
     // making the cuatomer in the 
     const customerNameBodyTemplate = (rowData) => {
-        return rowData.customer ;
+        return rowData.customer ? rowData.customer.name : "N/A";
     };
 
     const editVehicle = (vehicle) => {

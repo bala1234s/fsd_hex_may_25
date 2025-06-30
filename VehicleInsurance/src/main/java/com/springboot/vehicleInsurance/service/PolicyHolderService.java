@@ -64,6 +64,7 @@ public class PolicyHolderService {
 
 	// Add new policy 
 	public void add(int customerId, int vehicleId, int policyId, PolicyHolder holder, List<AddOns> addOns) {
+		
 		logger.info("Adding New Policy for the Customer");
 	    Customer customer = customerRepository.findById(customerId)
 	            .orElseThrow(() -> new RuntimeException("Invalid Customer ID"));
@@ -82,7 +83,7 @@ public class PolicyHolderService {
 	    logger.info("fetch policy by policy id");
 	    
 	    
-	    policy.setPrice(policy.getPrice() * holder.getPlanYear());
+	    policy.setPrice(policy.getPrice() * holder.getPlanYear()); // <-- add price based on the plan year
 	    vehicle.setCustomer(customer);
 	    holder.setVehicle(vehicle);
 	    holder.setPolicy(policy);

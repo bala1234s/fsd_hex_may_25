@@ -47,6 +47,7 @@ function ClaimPolicy() {
                 getPolicyHolderWithApproved(dispatch);
                 setVisible(false);
             }).catch(err => console.log(err))
+            alert("Claim Request success")
             getPolicyHolderWithApproved(dispatch);
 
         }).catch(err => console.log(err))

@@ -140,7 +140,9 @@ function AllPolicyDetails() {
                     Previous
                 </button>
 
-                <button className="btn btn-primary" disabled={policy.length <= page} onClick={() => setPage(page + 1)}>
+                <button className="btn btn-primary"
+                    // disabled={policy.length <= page}
+                    onClick={() => setPage(page + 1)}>
                     Next
                 </button>
             </div>

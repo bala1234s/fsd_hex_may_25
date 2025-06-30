@@ -213,7 +213,7 @@ public class CustomerService {
 	        throw new RuntimeException("Image too large: " + kbs + " KB. Max allowed: 3000 KB");
 	    }
 
-	    // Step 4: Save the file to disk
+	    // Step 4: Save the file to my system
 	    String uploadPath = "D:\\Hexaware\\Phase 3\\Springboot\\Case Study\\VehicleInsurance-UI\\public\\ProfilePic";
 	    Files.createDirectories(Path.of(uploadPath));
 	    Path path = Paths.get(uploadPath, originalFileName);
@@ -222,6 +222,62 @@ public class CustomerService {
 	    // Step 5: Set profilePic and save Customer
 	    customer.setProfilePic(originalFileName);
 	    return customerRepository.save(customer);
+	}
+
+
+	public Customer uploadPan(MultipartFile file, int customerId) throws IOException {
+		 Customer customer = customerRepository.findById(customerId)
+		    		.orElseThrow(()-> new CustomerNotFoundException("Customer Not Found"));
+		    logger.info("Customer Name: " + customer.getName());
+
+		    String originalFileName = file.getOriginalFilename();
+		    String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
+
+		    // Validate file type
+		    if (!List.of("pdf").contains(extension)) {
+		        throw new RuntimeException("Invalid file extension: " + extension + ". Allowed: pdf only");
+		    }
+
+		    long kbs = file.getSize() / 1024;
+		    if (kbs > 3000) {
+		        throw new RuntimeException("PDF size too large: " + kbs + "KB. Max allowed is 3000KB.");
+		    }
+
+		    String uploadPath = "D:\\Hexaware\\Phase 3\\Springboot\\Case Study\\VehicleInsurance-UI\\public\\PanDoc";
+		    Files.createDirectories(Path.of(uploadPath));
+		    Path path = Paths.get(uploadPath, originalFileName);
+		    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+		    customer.setPanDoc(originalFileName);
+		    return customerRepository.save(customer);
+	}
+
+
+	public Customer uploadAadhar(MultipartFile file, int customerId) throws IOException {
+		 Customer customer = customerRepository.findById(customerId)
+		    		.orElseThrow(()-> new CustomerNotFoundException("Customer Not Found"));
+		    logger.info("Customer Name: " + customer.getName());
+
+		    String originalFileName = file.getOriginalFilename();
+		    String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
+
+		    // Validate file type
+		    if (!List.of("pdf").contains(extension)) {
+		        throw new RuntimeException("Invalid file extension: " + extension + ". Allowed: pdf only");
+		    }
+
+		    long kbs = file.getSize() / 1024;
+		    if (kbs > 3000) {
+		        throw new RuntimeException("PDF size too large: " + kbs + "KB. Max allowed is 3000KB.");
+		    }
+
+		    String uploadPath = "D:\\Hexaware\\Phase 3\\Springboot\\Case Study\\VehicleInsurance-UI\\public\\AadharDoc";
+		    Files.createDirectories(Path.of(uploadPath));
+		    Path path = Paths.get(uploadPath, originalFileName);
+		    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+		    customer.setAadharDoc(originalFileName);
+		    return customerRepository.save(customer);
 	}
 
 

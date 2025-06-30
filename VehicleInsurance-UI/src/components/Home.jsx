@@ -100,14 +100,14 @@ function Home() {
                     </div>
                     <div className="faq-item">
                         <h4>What documents are needed to file a claim?</h4>
-                        <p>You'll need your policy number, vehicle registration, and a copy of the FIR if applicable.</p>
+                        <p>You'll need your policy number, vehicle registration, and picture of incident.</p>
                     </div>
                 </div>
 
                 <div className="get-started-section">
                     <h2 className="section-title">Ready to Insure Your Vehicle?</h2>
                     <p className="get-started-text">Protect your vehicle and enjoy peace of mind with our comprehensive insurance plans.</p>
-                    <a href="#" className="custom-btn-primary">Get Started Now</a>
+                    <Link to={'/'} className="custom-btn-primary">Get Started Now</Link>
                 </div>
             </div>
         </div>

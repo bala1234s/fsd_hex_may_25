@@ -55,6 +55,31 @@ public class CustomerController {
 	    return customerService.uploadProfilePic(file,customerId);
 	}
 
+	/*
+	 * Aim : Upload Profile pic
+	 * Path : localhost:8080/api/customer/upload/profile-pic
+	 * Method : Post
+	 * Input : File 
+	 * */
+	
+	@PostMapping("api/customer/upload/pan/{customerId}")
+	public Customer uploadPan(@PathVariable int customerId, @RequestParam("file") MultipartFile file) throws IOException {
+	    return customerService.uploadPan(file,customerId);
+	}
+	
+	/*
+	 * Aim : Upload Profile pic
+	 * Path : localhost:8080/api/customer/upload/profile-pic
+	 * Method : Post
+	 * Input : File 
+	 * */
+	
+	@PostMapping("api/customer/upload/aadhar/{customerId}")
+	public Customer uploadAadhar(@PathVariable int customerId, @RequestParam("file") MultipartFile file) throws IOException {
+	    return customerService.uploadAadhar(file,customerId);
+	}
+
+	
 	
 	
 
